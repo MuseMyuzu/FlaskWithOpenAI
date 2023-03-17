@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import whisper
 import morse
+import json
 
 app = Flask(__name__)
 
@@ -24,8 +25,12 @@ def save_wav():
     print(morse_text)
     
     # jsonを返す
+    """
     response_data = {"status": "success"}
     return jsonify(response_data)
+    """
+    return json.dumps(text)
+    
 
 # ホームページ
 @app.route('/')

@@ -163,23 +163,6 @@ a {
         margin-bottom: 60px;
     }
 }
-/*入力する場所*/
-#chatbot-text {
-    height: 40px;
-    width: 72%;
-    display: block;
-    font-size: 16px;
-    box-sizing: border-box;
-    padding-left: 10px;
-    margin: auto 10px auto 15px;
-    color: #777;
-    border: 0;
-    outline: 0;
-}
-#chatbot-text:focus{
-    border: none;
-    outline: none;
-}
 /*送信ボタン*/
 #chatbot-submit{
     cursor: pointer;
