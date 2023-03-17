@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div id= "chatbot">
+        
+        <div id= "chatbot-header">
+            <div id= "chatbot-logo">モールス変換</div>
+            <i id= "chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick= "chatbotZoom()">fullscreen</i>
+        </div>
+
+        <div id= "chatbot-body">
+            <ul id= "chatbot-ul"></ul>
+        </div>
+
+        <!--入力場所，送信ボタン-->
+        <form onsubmit= "return false">
+            <div id= "chatbot-footer">
+                <input type= "submit" value= "送信" id= "chatbot-submit">
+            </div>
+        </form>
+
+    </div>
+	<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+	<script src="../static/record.js"></script>
+{% endblock %}
