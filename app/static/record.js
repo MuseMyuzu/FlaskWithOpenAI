@@ -100,17 +100,20 @@ navigator.mediaDevices.getUserMedia({
     postAudio();
   });
 
+  const recSign = document.getElementById('rec');
   // --------------------自分の投稿（送信ボタンを押した時の処理）--------------------
   chatSubmitBtn.addEventListener('click', () => {
     if(isRecording){
       // 録音中にボタンを押したら、録音をやめる
       recorder.stop();
-      chatSubmitBtn.value = "話す"
+      chatSubmitBtn.value = "話す";
+      recSign.style.visibility = "hidden";
       isRecording = false;
     } else {
       // 録音していないときにボタンを押したら、録音開始
       recorder.start();
-      chatSubmitBtn.value = "送信"
+      chatSubmitBtn.value = "送信";
+      recSign.style.visibility = "visible";
       isRecording = true;
     }
   });
