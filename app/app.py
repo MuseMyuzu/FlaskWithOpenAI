@@ -18,11 +18,11 @@ def save_wav():
     with open(WEBM_FILE, "wb") as f:
         f.write(audio_data)
     
-    text = whisper.speechfile_to_text("recording.webm")
+    text= whisper.speechfile_to_text("recording.webm", lang)
     print(text)
 
-    morse_text = morse.convert_to_morse_code(text)
-    print(morse_text)
+    #morse_text = morse.convert_to_morse_code(text)
+    #print(morse_text)
     
     # jsonを返す
     """
