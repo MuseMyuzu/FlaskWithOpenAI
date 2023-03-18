@@ -24,8 +24,8 @@ def save_wav():
     text= whisper.speechfile_to_text("recording.webm", lang_text)
     print(text)
 
-    #morse_text = morse.convert_to_morse_code(text)
-    #print(morse_text)
+    morse_text = morse.convert_to_morse_code(text)
+    print(morse_text)
     
     # jsonを返す
     """

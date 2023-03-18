@@ -1,4 +1,6 @@
+import pykakasi
 
+kks = pykakasi.kakasi()
 
 # Define the Morse code conversion function
 def convert_to_morse_code(text):
@@ -10,13 +12,17 @@ def convert_to_morse_code(text):
         'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
         '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'
     }
+    
+    res_dict = kks.convert(text)
+    result = ''.join([item['hira'] for item in res_dict])
+
     morse_text = ""
-    for char in text:
-        if char.isalpha():
+    for char in result:
+        if char.upper() in morse_code:
             morse_text += morse_code[char.upper()] + " "
-        elif char.isdigit():
-            morse_text += morse_code[char] + " "
         elif char == " ":
             morse_text += "/ "
+        else:
+            morse_text += "[" +char+ "]"
     return morse_text
 
