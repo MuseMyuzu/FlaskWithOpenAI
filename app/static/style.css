@@ -234,6 +234,59 @@ a {
     /* 最初は非表示 */
     visibility: hidden;
 }
+/* トグルボタン */
+.toggle-button-004 {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 75px;
+    height: 37.5px;
+    margin: auto;
+    margin-left: 15px;
+    border-radius: 50px;
+    box-sizing: content-box;
+    background-color: #cb494933;
+    cursor: pointer;
+    transition: background-color .4s;
+}
+.toggle-button-004:has(:checked) {
+    background-color: #456F9933;
+}
+.toggle-button-004::before {
+    position: absolute;
+    left: 5px;
+    width: 31.5px;
+    height: 31.5px;
+    border-radius: 50%;
+    background-color: #cb4949;
+    content: '';
+    transition: left .4s;
+}
+
+.toggle-button-004:has(:checked)::before {
+    left: 37.5px;
+    background-color: #456F99;
+}
+
+.toggle-button-004::after {
+    position: absolute;
+    left: 20.5px;
+    transform: translateX(-50%);
+    color: #fff;
+    font-weight: 600;
+    font-size: .9em;
+    content: 'Ja';
+    transition: left .4s;
+}
+
+.toggle-button-004:has(:checked)::after {
+    left: 53.25px;
+    content: 'En';
+}
+
+.toggle-button-004 input {
+    display: none;
+}
 
 #chatbot-ul {
     /*ulのデフォルの隙間を消す*/

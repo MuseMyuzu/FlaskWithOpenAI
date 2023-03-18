@@ -49,6 +49,11 @@ navigator.mediaDevices.getUserMedia({
     var blob = new Blob(chunks, { 'type': 'audio/wav; codecs=MS_PCM' });
     var path = URL.createObjectURL(blob);
 
+    // トグルの結果(true/false)をテキストファイルに入れておく
+    var toggle = document.getElementById("lang-toggle");
+    const langText = toggle.checked ? "en" : "ja"
+    const langFile = new Blob([langText], {type: "text/plain"})
+
     // 録音した音声データを再生するためのaudio要素を作成する
     /*
     var audioElement = document.createElement('audio');
@@ -59,6 +64,7 @@ navigator.mediaDevices.getUserMedia({
 
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
+    fd.append("lang", langFile, "lang.text")
     // フォームを送信する
     async function postAudio(){
       var r = await fetch("/save_wav", {

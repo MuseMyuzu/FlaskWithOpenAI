@@ -13,12 +13,15 @@ WEBM_FILE = 'recording.webm'
 def save_wav():
     # javascriptからファイルを受け取る
     audio_file = request.files["audio_data"]
-    # データをwebm形式で保存
+    lang_file = request.files["lang"]
+    # 音声データをwebm形式で保存
     audio_data = audio_file.read()
     with open(WEBM_FILE, "wb") as f:
         f.write(audio_data)
+    # テキストデータを保存
+    lang_text = lang_file.read().decode("utf-8")
     
-    text= whisper.speechfile_to_text("recording.webm", lang)
+    text= whisper.speechfile_to_text("recording.webm", lang_text)
     print(text)
 
     #morse_text = morse.convert_to_morse_code(text)
