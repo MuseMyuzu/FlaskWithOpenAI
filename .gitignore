@@ -156,3 +156,4 @@ cython_debug/
 *.webm
 *.wav
 *.mp3
+app/recording.webm
