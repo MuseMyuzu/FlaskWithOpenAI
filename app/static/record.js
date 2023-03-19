@@ -18,8 +18,6 @@ navigator.mediaDevices.getUserMedia({
   var chunks = [];
   // 録音中かどうか
   var isRecording = false;
-  // 「userCount」は実質必要ないが、管理しやすくするために導入する（「chatList」のコメントアウト，最後のやまびこ，今後の開発）
-  let userCount = 0;
   // ユーザーの発言，回答内容を記憶する配列
   let userData = [];
 
@@ -32,20 +30,11 @@ navigator.mediaDevices.getUserMedia({
   recorder.addEventListener('stop', function (event) {
     //集音したものから音声データを作成する
     var blob = new Blob(chunks, { 'type': 'audio/wav; codecs=MS_PCM' });
-    var path = URL.createObjectURL(blob);
 
     // トグルの結果(true/false)をテキストファイルに入れておく
     var toggle = document.getElementById("lang-toggle");
     const langText = toggle.checked ? "en" : "ja"
     const langFile = new Blob([langText], {type: "text/plain"})
-
-    // 録音した音声データを再生するためのaudio要素を作成する
-    /*
-    var audioElement = document.createElement('audio');
-    audioElement.controls = true;
-    document.body.appendChild(audioElement);
-    audioElement.src = path;
-    */
 
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
@@ -64,10 +53,6 @@ navigator.mediaDevices.getUserMedia({
       // 空行の場合送信不可
       if (!resText || !resText.match(/\S/g)) return false;
 
-      userCount++;
-
-      console.log(`userCount: ${userCount}`);
-
       // 投稿内容を後に活用するために、配列に保存しておく
       userData.push(resText);
       console.log(userData);
@@ -84,7 +69,9 @@ navigator.mediaDevices.getUserMedia({
       div.classList.add('chatbot-right');
       div.textContent = resText;
 
-      robotOutput(botText);
+      // モールスを全角になおす
+      const botText2byte = botText.replace(/-/g, "ー").replace(/\./g, "・").replace(/ /g, "　");
+      robotOutput(botText2byte);
 
       // 一番下までスクロール
       chatToBottom();

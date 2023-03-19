@@ -42,8 +42,5 @@ def convert_to_morse_code(text):
             morse_text += "/ "
         else:
             morse_text += "[" +char+ "]"
-    
-    #morse_text.replace("-", "ー")
-    #morse_text.replace(".", "・")
     return morse_text
 
