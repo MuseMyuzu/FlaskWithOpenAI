@@ -2,17 +2,20 @@
 
 const chatSubmitBtn = document.getElementById('chatbot-submit');
 
+// 拡大ボタン
+let chatbotZoomState = 'none';
+const chatbot = document.getElementById('chatbot');
+const chatbotBody = document.getElementById('chatbot-body');
+const chatbotFooter = document.getElementById('chatbot-footer');
+const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
+
 // マイクアクセス要求
 navigator.mediaDevices.getUserMedia({
   audio: true
 }).then(function (stream) {
   // MediaRecorderオブジェクトで音声データを録音する
   var recorder = new MediaRecorder(stream, {
-    mimeType: 'audio/webm' /*, 
-    audioBitsPerSecond: 16000 ,
-    channelCount: 1,
-    sampleRate: 16000*/
-  });
+    mimeType: 'audio/webm'  });
 
   // 音を拾い続けるためのチャンク
   var chunks = [];
@@ -27,12 +30,26 @@ navigator.mediaDevices.getUserMedia({
   // recorder.stopが実行された時のイベント
   recorder.addEventListener('stop', function (event) {
     //集音したものから音声データを作成する
-    var blob = new Blob(chunks, { 'type': 'audio/wav; codecs=MS_PCM' });
+    var blob = new Blob(chunks, { 'type': 'audio/webm' });
 
     // トグルの結果(true/false)をテキストファイルに入れておく
     var toggle = document.getElementById("lang-toggle");
     const langText = toggle.checked ? "en" : "ja"
     const langFile = new Blob([langText], {type: "text/plain"})
+
+    // ユーザー用吹き出し
+    // ulとliを作り、右寄せのスタイルを適用し投稿する
+    const ul = document.getElementById('chatbot-ul');
+    const li = document.createElement('li');
+    li.classList.add('right');
+    ul.appendChild(li);
+
+    // 送信中のアニメーション
+    const userLoadingDiv = document.createElement('div');
+    li.appendChild(userLoadingDiv);
+    userLoadingDiv.classList.add('chatbot-right');
+    userLoadingDiv.innerHTML = '<div id= "user-loading-field"><span id= "user-loading-circle1" class="material-icons">circle</span> <span id= "user-loading-circle2" class="material-icons">circle</span> <span id= "user-loading-circle3" class="material-icons">circle</span>';
+    console.log('送信中');
 
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
@@ -45,16 +62,29 @@ navigator.mediaDevices.getUserMedia({
       });
       var resJson = await r.json();
 
+      // 送信中アニメーション削除
+      userLoadingDiv.remove();
+
       var userText = resJson.user_text;
       var botText = resJson.bot_text;
 
-      userOutput(userText);
+      // ユーザー吹き出し
+      // ユーザテキストが空の場合、エラー
+      if (!userText || !userText.match(/\S/g)) return false;
 
-      // モールスを全角になおす
-      const botText2byte = botText.replace(/-/g, "ー").replace(/\./g, "・").replace(/ /g, "　");
+      // このdivにテキストを指定
+      const div = document.createElement('div');
+      li.appendChild(div);
+      div.classList.add('chatbot-right');
+      div.textContent = userText;
+
+      // 一番下までスクロール
+      chatToBottom();
+
+      // ボット吹き出し
+      // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、半角の空白→全角の空白）
+      const botText2byte = botText.replace(/-/g, "ー").replace(/\.(?!])/g, "・").replace(/ /g, "　");
       robotOutput(botText2byte);
-
-      
 
       chunks = [];
     }
@@ -82,42 +112,12 @@ navigator.mediaDevices.getUserMedia({
   console.log('The following gUM error occured: ' + err);
 });
 
-
-
-
-// 拡大ボタン
-let chatbotZoomState = 'none';
-const chatbot = document.getElementById('chatbot');
-const chatbotBody = document.getElementById('chatbot-body');
-const chatbotFooter = document.getElementById('chatbot-footer');
-const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
-
 // 一番下へ
 function chatToBottom() {
   const chatField = document.getElementById('chatbot-body');
   chatField.scroll(0, chatField.scrollHeight - chatField.clientHeight);
 }
 
-// --------------------ユーザーの投稿--------------------
-function userOutput(content_text){
-  // 空行の場合送信不可
-  if (!content_text || !content_text.match(/\S/g)) return false;
-
-  // ulとliを作り、右寄せのスタイルを適用し投稿する
-  const ul = document.getElementById('chatbot-ul');
-  const li = document.createElement('li');
-  // このdivにテキストを指定
-  const div = document.createElement('div');
-
-  li.classList.add('right');
-  ul.appendChild(li);
-  li.appendChild(div);
-  div.classList.add('chatbot-right');
-  div.textContent = content_text;
-
-  // 一番下までスクロール
-  chatToBottom();
-}
 
 // --------------------ロボットの投稿--------------------
 function robotOutput(content_text) {

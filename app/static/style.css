@@ -464,6 +464,35 @@ input[type="range"]{
 
 
 
+/*---------- ユーザ送信中アニメーション ----------*/
+#user-loading-field {
+    display: inline-block;
+    height: 100%;
+    width: 26px;
+    position: relative;
+}
+
+#user-loading-field>span {
+    color: #FFF;
+    font-size: 10px;
+    transform: scale(.7);
+    position: absolute;
+    top: 0px;
+}
+
+#user-loading-circle1 {
+    animation: rlc1 .8s linear infinite alternate;
+}
+#user-loading-circle2 {
+    animation: rlc2 .8s linear infinite;
+    margin-left: 8px;
+}
+#user-loading-circle3 {
+    animation: rlc3 .8s linear infinite alternate;
+    margin-left: 16px;
+}
+
+
 /*---------- ロボット考え中アニメーション ----------*/
 #robot-loading-field {
     display: inline-block;
@@ -477,7 +506,7 @@ input[type="range"]{
     font-size: 10px;
     transform: scale(.7);
     position: absolute;
-    top: -12px;
+    top: 0px;
 }
 
 #robot-loading-circle1 {
