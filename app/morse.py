@@ -1,9 +1,5 @@
-import pykakasi
-
-kks = pykakasi.kakasi()
-
 # Define the Morse code conversion function
-def convert_to_morse_code(text):
+def convert_to_morse_code(kana_text):
     # Add your Morse code conversion algorithm here
     morse_code = {
         # 欧文
@@ -31,13 +27,10 @@ def convert_to_morse_code(text):
         'ー': '.--.-', '、': '.-.-.-', '（': '-.--.-', '）': '.-..-.', '゛': '..', '゜': '..--.', '？': '-...-.', 
         '！':'.--.-' 
     }
-    
-    res_dict = kks.convert(text)
-    result = ''.join([item['hira'] for item in res_dict])
 
     # かな文字から一文字ずつ取って、モールスに直す
     morse_text = ""
-    for char in result:
+    for char in kana_text:
         if char.upper() in morse_code:
             morse_text += morse_code[char.upper()] + " "
         elif char == " ":

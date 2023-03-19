@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import whisper
 import morse
 import json
+import pykakasi
 
 app = Flask(__name__)
 
@@ -21,10 +22,18 @@ def save_wav():
     # テキストデータを保存
     lang_text = lang_file.read().decode("utf-8")
     
-    text= whisper.speechfile_to_text("recording.webm", lang_text)
+    text = whisper.speechfile_to_text("recording.webm", lang_text)
+    # 日本語の場合、記号を全角のものに置き換える
+    if lang_text == "ja":
+        text = text.translate(str.maketrans({"!": "！", "?": "？", "(": "（", ")": "）"}))
     print(text)
 
-    morse_text = morse.convert_to_morse_code(text)
+    # ひらがなに変換
+    kks = pykakasi.kakasi()
+    kana_dict = kks.convert(text)
+    kana_text = ''.join([item['hira'] for item in kana_dict])
+    
+    morse_text = morse.convert_to_morse_code(kana_text)
     print(morse_text)
 
     result_dict = dict(user_text=text, bot_text=morse_text)
