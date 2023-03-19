@@ -26,13 +26,15 @@ def save_wav():
 
     morse_text = morse.convert_to_morse_code(text)
     print(morse_text)
+
+    result_dict = dict(user_text=text, bot_text=morse_text)
     
     # jsonを返す
     """
     response_data = {"status": "success"}
     return jsonify(response_data)
     """
-    return json.dumps(text)
+    return json.dumps(result_dict)
     
 
 # ホームページ

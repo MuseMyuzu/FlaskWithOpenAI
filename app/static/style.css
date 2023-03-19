@@ -287,6 +287,17 @@ a {
 .toggle-button-004 input {
     display: none;
 }
+/* 音量スライダー */
+.range {
+    margin: auto;
+}
+input[type="range"]{
+    cursor: pointer;
+    width: 80px;
+    border-radius: 50%;
+}
+
+
 
 #chatbot-ul {
     /*ulのデフォルの隙間を消す*/

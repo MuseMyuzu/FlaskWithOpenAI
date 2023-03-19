@@ -29,12 +29,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             <ul id= "chatbot-ul"></ul>
         </div>
 
-        <!--入力場所，送信ボタン-->
+        <!--フッター-->
         <form onsubmit= "return false">
             <div id= "chatbot-footer">
+                <!-- 言語トグル -->
                 <label class="toggle-button-004">
                     <input type="checkbox" id="lang-toggle"/>
                 </label>
+                <!-- 音量スライダー -->
+                <div class="range">
+                    <input type="range" min="0" max="100" id="Volume-range">
+                </div>
+                <!-- 送信ボタン -->
                 <div id="rec"></div>
                 <input type= "submit" value= "話す" id= "chatbot-submit">
             </div>
