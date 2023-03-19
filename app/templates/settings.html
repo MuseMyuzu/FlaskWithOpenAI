@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<!-- Google フォント使用（familyに使いたいフォント名）-->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Google マテリアル使用（全画面ボタンなど））-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href= "https://fonts.googleapis.com/icon?family=Material+Icons" rel= "stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../static/style.css" type="text/css">
 {% endblock %}
 
@@ -15,17 +18,56 @@
     </div>
 
     <div id="chatbot-body">
-        <h2>使い方</h2>
+        <div id="content-body">
+            <h2>使い方</h2>
 
-        <form>
-            <div class="radio_lang">
-                <p>言語 Language</p>
-                <input type="radio" name="radio_lang_1" id="radio_lang_1" />
-                <label for="radio_lang_1">日本語</label>
-                <input type="radio" name="radio_lang_2" id="radio_lang_2" />
-                <label for="radio_lang_2">English</label>
-            </div>
-        </form>
+            <form>
+                <div class="radio_lang">
+                    <p>言語 Language</p>
+                    <input type="radio" name="radio_lang_1" id="radio_lang_1" />
+                    <label for="radio_lang_1">日本語</label>
+                    <input type="radio" name="radio_lang_2" id="radio_lang_2" />
+                    <label for="radio_lang_2">English</label>
+                </div>
+            </form>
+
+            <h2>遊び方</h2>
+            <h3>話す</h3>
+            <p>「話す」を押すと録音が始まり、「送信」を押すと録音が停止して音声がサーバに送信されます。</p>
+            <h3>言語</h3>
+            <p>左下の選択バーで言語を選択できます。日本語を話すなら「Ja」、英語を話すなら「En」を選択します。モールスは、日本語の場合「全角」、英語の場合「半角」で出力されます。</p>
+            <h3>音量</h3>
+            <p>音量バーでボリューム調整できます。左が消音、右にいくほど音量が大きくなります。</p>
+            <h3>全画面</h3>
+            <p>PCでは右上のアイコンから全画面に切り替えることができます。もう一度押すと戻ります。</p>
+
+            <h2>注意</h2>
+            <ul>
+                <li>音声データが私の契約するサーバに送られますが、このアプリ以外には利用しません。</li>
+                <li>不具合などありましたら、下のリンクからTwitterなどで教えていただけると助かります。</li>
+            </ul>
+
+
+            <h2>作成者</h2>
+            <p>ミューズの情報教室</p>
+            <h4>リンク</h4>
+            <ul>
+                <li>YouTube</li>
+                <p>コンピュータ系の分かりやすい解説動画を投稿しています</p>
+                <li>Twitter</li>
+                <p>このアプリの開発段階の様子が見れます。</p>
+                <li>ミューズの情報教室サイト</li>
+                <p>話題のAIの使い方などの解説ブログ</p>
+            </ul>
+
+            <h2>ライセンス</h2>
+            <p>GPL v3.0です。GitHubでソースコードを公開しています。</p>
+            <p>SNS等でこのアプリを紹介してもらうのは大歓迎です！</p>
+        </div>
+    </div>
+
+    <div id= "chatbot-footer">
+
     </div>
 
 </div>

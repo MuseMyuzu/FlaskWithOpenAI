@@ -5,9 +5,15 @@
     display: block;
     height: 100%;
     line-height: 60px;
-    padding: 0 0px;
+    position: absolute;
+    right: 70px;
     color: #FFF;
     cursor: pointer;
+}
+
+#content-body{
+    width: 80%;
+    margin: 0 auto;
 }
 
 /*ラジオボタン*/

@@ -13,7 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 {% block head %}
 <!-- Google マテリアル使用（全画面ボタンなど））-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href= "https://fonts.googleapis.com/icon?family=Material+Icons" rel= "stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
 <link rel= "stylesheet" href="../static/style.css" type="text/css">
 <link rel= "stylesheet" href="../static/footer.css" type="text/css">
 {% endblock %}
@@ -39,6 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                     <input type="checkbox" id="lang-toggle"/>
                 </label>
                 <!-- 音量スライダー -->
+                <i id= "volume-icon" class="material-icons">volume_up</i>
                 <div class="range">
                     <input type="range" min="0" max="100" id="Volume-range">
                 </div>

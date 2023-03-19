@@ -7,7 +7,7 @@ const chatbotBody = document.getElementById('chatbot-body');
 const chatbotFooter = document.getElementById('chatbot-footer');
 const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
 
-function backToHome(){
+function backToHome() {
     location.assign("/");
 }
 
@@ -15,59 +15,59 @@ function backToHome(){
 function chatbotZoomShape() {
     chatbotZoomState = 'large';
     console.log(chatbotZoomState);
-  
+
     chatbot.classList.add('chatbot-zoom');
     chatbotBody.classList.add('chatbot-body-zoom');
     chatbotFooter.classList.add('chatbot-footer-zoom');
     // 縮小アイコンに変更
     chatbotZoomIcon.textContent = 'fullscreen_exit';
     chatbotZoomIcon.setAttribute('onclick', 'chatbotZoomOff()');
-  
+
     if (window.matchMedia('(min-width:700px)').matches) {
-      //PC処理
-      document.querySelectorAll('.chatbot-left').forEach((cl) => {
-        cl.style.maxWidth = '52vw';
-      });
-      document.querySelectorAll('.chatbot-right').forEach((cr) => {
-        cr.style.maxWidth = '52vw';
-      });
-      document.querySelectorAll('.chatbot-left-rounded').forEach((cr) => {
-        cr.style.maxWidth = '52vw';
-      });
+        //PC処理
+        document.querySelectorAll('.chatbot-left').forEach((cl) => {
+            cl.style.maxWidth = '52vw';
+        });
+        document.querySelectorAll('.chatbot-right').forEach((cr) => {
+            cr.style.maxWidth = '52vw';
+        });
+        document.querySelectorAll('.chatbot-left-rounded').forEach((cr) => {
+            cr.style.maxWidth = '52vw';
+        });
     }
-  }
-  function chatbotZoom() {
+}
+function chatbotZoom() {
     // 拡大する
     chatbotZoomShape();
     window.location.href = '#chatbot';
     // フルスクリーン
     // document.body.requestFullscreen();
-  }
-  function chatbotZoomOffShape() {
+}
+function chatbotZoomOffShape() {
     chatbotZoomState = 'middle';
     console.log(chatbotZoomState);
-  
+
     chatbot.classList.remove('chatbot-zoom');
     chatbotBody.classList.remove('chatbot-body-zoom');
     chatbotFooter.classList.remove('chatbot-footer-zoom');
     // 拡大アイコンに変更
     chatbotZoomIcon.textContent = 'fullscreen';
     chatbotZoomIcon.setAttribute('onclick', 'chatbotZoom()');
-  
+
     document.querySelectorAll('.chatbot-left').forEach((cl) => {
-      cl.style.maxWidth = '70%';
+        cl.style.maxWidth = '70%';
     });
     document.querySelectorAll('.chatbot-right').forEach((cr) => {
-      cr.style.maxWidth = '70%';
+        cr.style.maxWidth = '70%';
     });
     document.querySelectorAll('.chatbot-left-rounded').forEach((cr) => {
-      cr.style.maxWidth = '70%';
+        cr.style.maxWidth = '70%';
     });
-  }
-  function chatbotZoomOff() {
+}
+function chatbotZoomOff() {
     // 縮小する
     chatbotZoomOffShape();
     window.history.back();
     // フルスクリーン解除
     // document.exitFullscreen();
-  }
+}
