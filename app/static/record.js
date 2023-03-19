@@ -181,10 +181,6 @@ function goToSettings(){
   location.assign("/settings");
 }
 
-function backToHome(){
-  location.assign("/");
-}
-
 
 // PC用の拡大縮小機能
 function chatbotZoomShape() {

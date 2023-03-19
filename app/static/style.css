@@ -100,7 +100,6 @@ a {
     background: #335C80;
     position: relative;
     display: flex;
-    justify-content: space-between;
 }
 
 #chatbot-logo {
@@ -110,26 +109,29 @@ a {
     font-size: 16px;
 }
 
-.icons{
-    display: block;
-    height: 100%;
-    line-height: 60px;
-    padding: 0 20px;
-    color: #FFF;
-    cursor: pointer;
-}
-
 #chatbot-zoom-icon {
     display: block;
     height: 100%;
     line-height: 60px;
-    padding: 0 20px;
+    margin: auto;
+    margin-right: 20px;
     color: #FFF;
     cursor: pointer;
 }
 
 #chatbot-zoom-icon:active {
     background: #4D7999;
+}
+
+#settings-icon {
+    display: block;
+    height: 100%;
+    line-height: 60px;
+    margin: auto;
+    margin-right: 0px;
+    padding: 0 0px;
+    color: #FFF;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {

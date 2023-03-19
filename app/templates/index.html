@@ -23,8 +23,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         
         <div id= "chatbot-header">
             <div id= "chatbot-logo">モールス変換</div>
-            <i id= "settings-icon" class="material-icons icons" onclick= "goToSettings()">settings</i>
-            <i id= "chatbot-zoom-icon" class="material-icons waves-effect waves-light icons" onclick= "chatbotZoom()">fullscreen</i>
+            <i id= "settings-icon" class="material-icons" onclick= "goToSettings()">settings</i>
+            <i id= "chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick= "chatbotZoom()">fullscreen</i>
         </div>
 
         <div id= "chatbot-body">
@@ -48,15 +48,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             </div>
         </form>
 
-        <form action="/settings" method="get">
-            <input type="submit" value='設定へ'>
-        </form>
-
         <form method="POST" action="/save_wav">
             <input type="hidden" name="audio_data" id="audio-data">
         </form>
 
     </div>
-	<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
-	<script src="../static/record.js"></script>
+    
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script src="../static/record.js"></script>
 {% endblock %}

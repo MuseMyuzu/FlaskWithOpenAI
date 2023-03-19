@@ -1,6 +1,15 @@
 /* HTML, CSS参照 */
 /* https://blog.maromaro.co.jp/archives/stylerecipe_post/2331 */
 
+#back-icon {
+    display: block;
+    height: 100%;
+    line-height: 60px;
+    padding: 0 0px;
+    color: #FFF;
+    cursor: pointer;
+}
+
 /*ラジオボタン*/
 .radio_lang {
     padding-bottom: 20px;
