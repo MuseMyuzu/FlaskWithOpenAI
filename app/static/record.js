@@ -18,8 +18,6 @@ navigator.mediaDevices.getUserMedia({
   var chunks = [];
   // 録音中かどうか
   var isRecording = false;
-  // ユーザーの発言，回答内容を記憶する配列
-  let userData = [];
 
   //集音のイベントを登録する
   recorder.addEventListener('dataavailable', function (ele) {
@@ -47,34 +45,16 @@ navigator.mediaDevices.getUserMedia({
       });
       var resJson = await r.json();
 
-      var resText = resJson.user_text;
+      var userText = resJson.user_text;
       var botText = resJson.bot_text;
 
-      // 空行の場合送信不可
-      if (!resText || !resText.match(/\S/g)) return false;
-
-      // 投稿内容を後に活用するために、配列に保存しておく
-      userData.push(resText);
-      console.log(userData);
-
-      // ulとliを作り、右寄せのスタイルを適用し投稿する
-      const ul = document.getElementById('chatbot-ul');
-      const li = document.createElement('li');
-      // このdivにテキストを指定
-      const div = document.createElement('div');
-
-      li.classList.add('right');
-      ul.appendChild(li);
-      li.appendChild(div);
-      div.classList.add('chatbot-right');
-      div.textContent = resText;
+      userOutput(userText);
 
       // モールスを全角になおす
       const botText2byte = botText.replace(/-/g, "ー").replace(/\./g, "・").replace(/ /g, "　");
       robotOutput(botText2byte);
 
-      // 一番下までスクロール
-      chatToBottom();
+      
 
       chunks = [];
     }
@@ -116,6 +96,27 @@ const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
 function chatToBottom() {
   const chatField = document.getElementById('chatbot-body');
   chatField.scroll(0, chatField.scrollHeight - chatField.clientHeight);
+}
+
+// --------------------ユーザーの投稿--------------------
+function userOutput(content_text){
+  // 空行の場合送信不可
+  if (!content_text || !content_text.match(/\S/g)) return false;
+
+  // ulとliを作り、右寄せのスタイルを適用し投稿する
+  const ul = document.getElementById('chatbot-ul');
+  const li = document.createElement('li');
+  // このdivにテキストを指定
+  const div = document.createElement('div');
+
+  li.classList.add('right');
+  ul.appendChild(li);
+  li.appendChild(div);
+  div.classList.add('chatbot-right');
+  div.textContent = content_text;
+
+  // 一番下までスクロール
+  chatToBottom();
 }
 
 // --------------------ロボットの投稿--------------------
