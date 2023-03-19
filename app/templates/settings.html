@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- Google フォント使用（familyに使いたいフォント名）-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="../static/style.css" type="text/css">
+<link rel="stylesheet" href="../static/settings.css" type="text/css">
+{% endblock %}
+
+{% block body %}
+<div id="chatbot">
+    <div id="chatbot-header">
+        <div id="chatbot-logo">モールス変換</div>
+        <i id="chatbot-zoom-icon" class="material-icons waves-effect waves-light icons" onclick="chatbotZoom()">fullscreen</i>
+    </div>
+
+    <div id="chatbot-body">
+        <h2>使い方</h2>
+
+        <form>
+            <div class="radio_lang">
+                <p>言語 Language</p>
+                <input type="radio" name="radio_lang_1" id="radio_lang_1" />
+                <label for="radio_lang_1">日本語</label>
+                <input type="radio" name="radio_lang_2" id="radio_lang_2" />
+                <label for="radio_lang_2">English</label>
+            </div>
+        </form>
+
+        <form action="/" method="get">
+            <input type="submit" value='ホームへ'>
+        </form>
+    </div>
+
+    <div id= "chatbot-footer">
+        <i id= "back-icon" class="material-icons icons" onclick= "backToHome()">arrow_back_ios</i>
+    </div>
+
+</div>
+{% endblock %}

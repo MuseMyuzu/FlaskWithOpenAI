@@ -12,9 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {% extends 'base.html' %}
 
 {% block head %}
-<!-- Google フォント使用（familyに使いたいフォント名）-->
+<!-- Google マテリアル使用（全画面ボタンなど））-->
 <link href= "https://fonts.googleapis.com/icon?family=Material+Icons" rel= "stylesheet">
 <link rel= "stylesheet" href="../static/style.css" type="text/css">
+<link rel= "stylesheet" href="../static/footer.css" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -22,7 +23,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         
         <div id= "chatbot-header">
             <div id= "chatbot-logo">モールス変換</div>
-            <i id= "chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick= "chatbotZoom()">fullscreen</i>
+            <i id= "settings-icon" class="material-icons icons" onclick= "goToSettings()">settings</i>
+            <i id= "chatbot-zoom-icon" class="material-icons waves-effect waves-light icons" onclick= "chatbotZoom()">fullscreen</i>
         </div>
 
         <div id= "chatbot-body">
@@ -44,6 +46,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 <div id="rec"></div>
                 <input type= "submit" value= "話す" id= "chatbot-submit">
             </div>
+        </form>
+
+        <form action="/settings" method="get">
+            <input type="submit" value='設定へ'>
         </form>
 
         <form method="POST" action="/save_wav">

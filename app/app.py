@@ -51,6 +51,11 @@ def save_wav():
 def home():
     return render_template('index.html')
 
+# 設定・リンク等
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
 # サーバ起動
 if __name__ == '__main__':
     app.run(debug=True)

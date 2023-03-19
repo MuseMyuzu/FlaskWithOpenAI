@@ -177,7 +177,13 @@ function robotOutput(content_text) {
   }
 }
 
+function goToSettings(){
+  location.assign("/settings");
+}
 
+function backToHome(){
+  location.assign("/");
+}
 
 
 // PC用の拡大縮小機能

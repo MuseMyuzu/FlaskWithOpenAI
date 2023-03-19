@@ -1,0 +1,54 @@
+/* HTML, CSS参照 */
+/* https://blog.maromaro.co.jp/archives/stylerecipe_post/2331 */
+
+/*ラジオボタン*/
+.radio_lang {
+    padding-bottom: 20px;
+  }
+  .msr_radio_05 p {
+    font-size: 14px;
+    padding-bottom: 5px;
+  }
+  .msr_radio_05 input[type=radio] {
+    display: none;
+    margin: 0;
+  }
+  .msr_radio_05 input[type=radio] + label {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1.5px;
+    margin-right: 12px;
+    padding: 0 0 0px 24px;
+    position: relative;
+  }
+  .msr_radio_05 input[type=radio] + label::before {
+    border: 1px solid #777777;
+    border-radius: 50%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    content: "";
+    display: block;
+    margin-top: -9px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 16px;
+    width: 16px;
+  }
+  .msr_radio_05 input[type=radio]:checked + label::after {
+    background: #333333;
+    border-radius: 50%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    content: "";
+    display: block;
+    margin-top: -4px;
+    position: absolute;
+    left: 4px;
+    top: 0;
+    height: 8px;
+    width: 8px;
+  }
