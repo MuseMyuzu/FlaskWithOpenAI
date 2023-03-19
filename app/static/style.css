@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select: none;
+    /* user-select: none; テキストを選択できないようにする設定を解除 */
 }
 
 css {
@@ -214,6 +214,7 @@ a {
     background: #E6F0F7;
     border-radius: 0 9px 9px 9px;
     color: #1A5F80;
+    white-space: pre-wrap; /* 連続した半角スペースを維持 */
 }
 
 .chatbot-left-rounded {

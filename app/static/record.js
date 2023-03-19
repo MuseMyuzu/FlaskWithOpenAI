@@ -85,6 +85,7 @@ navigator.mediaDevices.getUserMedia({
       // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、半角の空白→半角×2）
       const botText2byte = botText.replace(/-/g, "ー").replace(/\.(?!])/g, "・").replace(/ /g, "  ");
       robotOutput(botText2byte);
+      console.log(botText2byte);
 
       chunks = [];
     }
@@ -156,7 +157,7 @@ function robotOutput(content_text) {
     const div = document.createElement('div');
     li.appendChild(div);
     div.classList.add('chatbot-left');
-    div.textContent = content_text
+    div.textContent = content_text;
     chatSubmitBtn.disabled = false;
 
     // 一番下までスクロール
