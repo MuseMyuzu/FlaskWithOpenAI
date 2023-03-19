@@ -290,6 +290,7 @@ a {
 /* 音量スライダー */
 .range {
     margin: auto;
+    margin-left: 0px;
 }
 input[type="range"]{
     cursor: pointer;

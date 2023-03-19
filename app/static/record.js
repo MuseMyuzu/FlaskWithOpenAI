@@ -1,5 +1,7 @@
 "use strict"
 
+const chatSubmitBtn = document.getElementById('chatbot-submit');
+
 // マイクアクセス要求
 navigator.mediaDevices.getUserMedia({
   audio: true
@@ -20,23 +22,6 @@ navigator.mediaDevices.getUserMedia({
   let userCount = 0;
   // ユーザーの発言，回答内容を記憶する配列
   let userData = [];
-
-  // 一番下へ
-  function chatToBottom() {
-    const chatField = document.getElementById('chatbot-body');
-    chatField.scroll(0, chatField.scrollHeight - chatField.clientHeight);
-  }
-
-  const userText = document.getElementById('chatbot-text');
-  const chatSubmitBtn = document.getElementById('chatbot-submit');
-
-  // ロボットが投稿をする度にカウントしていき、投稿を管理する
-  let robotCount = 0;
-  // 選択肢の正解個数
-  let qPoint = 0;
-
-  // 選択肢ボタンを押したときの次の選択肢（textのa，bなど）
-  let nextTextOption = '';
 
   //集音のイベントを登録する
   recorder.addEventListener('dataavailable', function (ele) {
@@ -71,7 +56,10 @@ navigator.mediaDevices.getUserMedia({
         method: "POST",
         body: fd
       });
-      var resText = await r.json();
+      var resJson = await r.json();
+
+      var resText = resJson.user_text;
+      var botText = resJson.bot_text;
 
       // 空行の場合送信不可
       if (!resText || !resText.match(/\S/g)) return false;
@@ -96,7 +84,7 @@ navigator.mediaDevices.getUserMedia({
       div.classList.add('chatbot-right');
       div.textContent = resText;
 
-      //robotOutput();
+      robotOutput(botText);
 
       // 一番下までスクロール
       chatToBottom();
@@ -137,15 +125,17 @@ const chatbotBody = document.getElementById('chatbot-body');
 const chatbotFooter = document.getElementById('chatbot-footer');
 const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
 
-/*
+// 一番下へ
+function chatToBottom() {
+  const chatField = document.getElementById('chatbot-body');
+  chatField.scroll(0, chatField.scrollHeight - chatField.clientHeight);
+}
+
 // --------------------ロボットの投稿--------------------
-function robotOutput() {
+function robotOutput(content_text) {
   // 相手の返信が終わるまで、その間は返信不可にする
   // なぜなら、自分の返信を複数受け取ったことになり、その全てに返信してきてしまうから
   // 例："Hi!〇〇!"を複数など
-
-  robotCount++;
-  console.log('robotCount：' + robotCount);
 
   chatSubmitBtn.disabled = true;
 
@@ -178,16 +168,12 @@ function robotOutput() {
     const div = document.createElement('div');
     li.appendChild(div);
     div.classList.add('chatbot-left');
-    div.textContent = "こんにちは"
+    div.textContent = content_text
     chatSubmitBtn.disabled = false;
 
     // 一番下までスクロール
     chatToBottom();
 
-    // 連続投稿
-    if (chatList[robotCount].continue) {
-      robotOutput();
-    }
   }, 2000);
 
   if (chatbotZoomState === 'large' && window.matchMedia('(min-width:700px)').matches) {
@@ -203,10 +189,6 @@ function robotOutput() {
   }
 }
 
-// 最初にロボットから話しかける
-robotOutput();
-
-*/
 
 
 
