@@ -87,6 +87,7 @@ navigator.mediaDevices.getUserMedia({
       // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、半角の空白→半角×3）
       const botText2byte = botText.replace(/-/g, "ー").replace(/\.(?!])/g, "・").replace(/ /g, "   ");
       robotOutput(botText2byte);
+      playMorseCode(botText);
       console.log(botText2byte);
 
       chunks = [];
