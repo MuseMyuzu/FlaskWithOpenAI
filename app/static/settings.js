@@ -13,7 +13,8 @@ function backToHome() {
 
 function switchToEnglish(){
     // /enを付与
-    location.assign(location.pathname + '\/en');
+    location.assign("/");
+    console.log(location.pathname + '/en')
 }
 
 function switchToJapanese(){

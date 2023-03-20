@@ -135,6 +135,11 @@ input[type="range"]{
 }
 
 #chatbot-submit-speak{
-    margin-top: 3px;
+    display: block; /* 最初は表示 */
+    color: #FFF;
+}
+
+#chatbot-submit-send{
+    display: none; /* 最初は非表示 */
     color: #FFF;
 }

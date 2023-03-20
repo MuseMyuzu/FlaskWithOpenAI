@@ -1,6 +1,8 @@
 "use strict"
 
 const chatSubmitBtn = document.getElementById('chatbot-submit');
+const chatSubmitSpeak = document.getElementById("chatbot-submit-speak");
+const chatSubmitSend = document.getElementById("chatbot-submit-send");
 
 // 拡大ボタン
 let chatbotZoomState = 'none';
@@ -98,13 +100,15 @@ navigator.mediaDevices.getUserMedia({
     if(isRecording){
       // 録音中にボタンを押したら、録音をやめる
       recorder.stop();
-      chatSubmitBtn.value = "話す";
+      chatSubmitSpeak.style.display = "block";
+      chatSubmitSend.style.display = "none";
       recSign.style.visibility = "hidden";
       isRecording = false;
     } else {
       // 録音していないときにボタンを押したら、録音開始
       recorder.start();
-      chatSubmitBtn.value = "送信";
+      chatSubmitSpeak.style.display = "none";
+      chatSubmitSend.style.display = "block";
       recSign.style.visibility = "visible";
       isRecording = true;
     }
