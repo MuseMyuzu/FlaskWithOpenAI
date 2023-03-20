@@ -123,7 +123,6 @@ input[type="range"]{
     font-size: 16px;
     background: #335C80;
     color: white;
-    display: block;
     /*デフォルトのボーダーを消す*/
     border: none;
     box-sizing: border-box;
@@ -133,4 +132,9 @@ input[type="range"]{
 #chatbot-submit:active {
     outline: 0;
     background: #86ABBF;
+}
+
+#chatbot-submit-speak{
+    margin-top: 3px;
+    color: #FFF;
 }
