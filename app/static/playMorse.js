@@ -14,28 +14,23 @@ function playMorseCode(text) {
   oscillator.connect(audioCtx.destination);
   oscillator.start();
 
-  const sequence = text.split('').flatMap((char) => {
-    if (char){
-        if(char === " "){
-            return [pauseDuration * 2];
-        }else if(char === ".") {
-            return [dotDuration, pauseDuration];
-        }else if(char === "-") {
-            return [dashDuration, pauseDuration];
-        }
-    }
-    return [];
-  });
-
-  console.log(sequence);
-  
   let time = audioCtx.currentTime;
-  sequence.forEach((duration) => {
-    oscillator.frequency.setValueAtTime(800, time);
-    time += duration / 1000;
+  // モールスのうち、[]で囲まれた部分のみ削除
+  text = text.replace(/\[[^\]]+\]/g, "");
+  text.split('').flatMap((char) => {
+    if(char === "."){
+        oscillator.frequency.setValueAtTime(800, time);
+        time += dotDuration / 1000;
+    }else if(char === "-"){
+        oscillator.frequency.setValueAtTime(800, time);
+        time += dashDuration / 1000;
+    }else if(char === " "){
+        oscillator.frequency.setValueAtTime(0, time);
+        time += pauseDuration / 1000;
+    }
     oscillator.frequency.setValueAtTime(0, time);
     time += pauseDuration / 1000;
-  });
+  })
 
   oscillator.stop(time);
 }
