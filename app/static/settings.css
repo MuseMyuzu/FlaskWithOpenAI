@@ -1,85 +1,64 @@
-/* HTML, CSS参照 */
-/* https://blog.maromaro.co.jp/archives/stylerecipe_post/2331 */
 
-#chatbot-header{
-    background: #888888;
+#chatbot-header {
+  background: #888888;
+}
+
+.button-lang {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin:0 auto;
+  padding: .9em 2em;
+  border: 1px solid #7c7c7c;
+  border-radius: 0px;
+  background-color: #fff;
+  color: #7c7c7c;
+  font-size: 12px;
+}
+
+.button-lang::after {
+  transform: rotate(45deg);
+  width: 5px;
+  height: 5px;
+  margin-left: 10px;
+  border-top: 2px solid #7c7c7c;
+  border-right: 2px solid #7c7c7c;
+  content: '';
 }
 
 #back-icon {
-    display: block;
-    height: 100%;
-    line-height: 60px;
-    position: absolute;
-    right: 70px;
-    color: #FFF;
-    cursor: pointer;
+  display: block;
+  height: 100%;
+  line-height: 60px;
+  position: absolute;
+  right: 70px;
+  color: #FFF;
+  cursor: pointer;
 }
 
-#content-body{
-    width: 70%;
-    margin: 0 auto;
+#content-body {
+  width: 70%;
+  margin: 0 auto;
 }
 
-h2{
-    margin-top: 35px;
-    margin-left: -24px;
-}
-h3{
-    margin-top: 5px;
-    margin-left: -16px;
-}
-h4{
-    margin-left: -8px;
+h2 {
+  border: #000;
+  margin-top: 35px;
+  margin-left: -24px;
 }
 
-/*ラジオボタン*/
-.radio_lang {
-    padding-bottom: 20px;
-  }
-  .msr_radio_05 p {
-    font-size: 14px;
-    padding-bottom: 5px;
-  }
-  .msr_radio_05 input[type=radio] {
-    display: none;
-    margin: 0;
-  }
-  .msr_radio_05 input[type=radio] + label {
-    cursor: pointer;
-    display: inline-block;
-    font-size: 14px;
-    line-height: 1.5px;
-    margin-right: 12px;
-    padding: 0 0 0px 24px;
-    position: relative;
-  }
-  .msr_radio_05 input[type=radio] + label::before {
-    border: 1px solid #777777;
-    border-radius: 50%;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    content: "";
-    display: block;
-    margin-top: -9px;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    height: 16px;
-    width: 16px;
-  }
-  .msr_radio_05 input[type=radio]:checked + label::after {
-    background: #333333;
-    border-radius: 50%;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    content: "";
-    display: block;
-    margin-top: -4px;
-    position: absolute;
-    left: 4px;
-    top: 0;
-    height: 8px;
-    width: 8px;
-  }
+h3 {
+  margin-top: 5px;
+  margin-left: -16px;
+}
+
+h4 {
+  margin-left: -8px;
+}
+
+p {
+  font-size: 15px;
+  padding-bottom: 5px;
+}
+

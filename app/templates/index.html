@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {% extends 'base.html' %}
 
 {% block head %}
+<title>モールス変換 - Morse Converter</title>
 <!-- Google マテリアル使用（全画面ボタンなど））-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +49,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 </div>
                 <!-- 送信ボタン -->
                 <div id="rec"></div>
-                <input type= "submit" value= "話す" id= "chatbot-submit">
+                <div id="chatbot-submit">
+                    <input type= "submit" id= "chatbot-submit">
+                </div>
             </div>
         </form>
 

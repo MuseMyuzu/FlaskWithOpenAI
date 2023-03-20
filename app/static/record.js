@@ -82,8 +82,8 @@ navigator.mediaDevices.getUserMedia({
       chatToBottom();
 
       // ボット吹き出し
-      // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、半角の空白→半角×2）
-      const botText2byte = botText.replace(/-/g, "ー").replace(/\.(?!])/g, "・").replace(/ /g, "  ");
+      // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、半角の空白→半角×3）
+      const botText2byte = botText.replace(/-/g, "ー").replace(/\.(?!])/g, "・").replace(/ /g, "   ");
       robotOutput(botText2byte);
       console.log(botText2byte);
 

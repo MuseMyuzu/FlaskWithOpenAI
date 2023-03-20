@@ -11,6 +11,17 @@ function backToHome() {
     location.assign("/");
 }
 
+function switchToEnglish(){
+    // /enを付与
+    location.assign(location.pathname + '/en');
+}
+
+function switchToJapanese(){
+    // /enを削除
+    const str = location.pathname;
+    location.assign(str.substring(0, str.pathname.length - 3));
+}
+
 // PC用の拡大縮小機能
 function chatbotZoomShape() {
     chatbotZoomState = 'large';

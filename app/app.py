@@ -22,7 +22,7 @@ def save_wav():
     # テキストデータを保存
     lang_text = lang_file.read().decode("utf-8")
     
-    text = whisper.speechfile_to_text("recording.webm", lang_text)
+    text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
     # 日本語の場合、記号を全角のものに置き換える
     if lang_text == "ja":
         text = text.translate(str.maketrans({"!": "！", "?": "？", "(": "（", ")": "）"}))
@@ -53,8 +53,11 @@ def home():
 
 # 設定・リンク等
 @app.route("/settings")
-def settings():
-    return render_template("settings.html")
+def settings_morse_ja():
+    return render_template("morse/settings_morse_ja.html")
+@app.route("/settings/en")
+def settings_morse_en():
+    return render_template("morse/settings_morse_en.html")
 
 # サーバ起動
 if __name__ == '__main__':
