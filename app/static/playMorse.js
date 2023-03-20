@@ -15,22 +15,20 @@ function playMorseCode(text) {
   oscillator.start();
 
   const sequence = text.split('').flatMap((char) => {
-    if (char === ' ') {
-      return [pauseDuration * 2];
-    }
-    const code = morseCode[char.toLowerCase()];
-    if (code) {
-      return code.split('').flatMap((symbol) => {
-        if (symbol === '.') {
-          return [dotDuration, pauseDuration];
-        } else if (symbol === '-') {
-          return [dashDuration, pauseDuration];
+    if (char){
+        if(char === " "){
+            return [pauseDuration * 2];
+        }else if(char === ".") {
+            return [dotDuration, pauseDuration];
+        }else if(char === "-") {
+            return [dashDuration, pauseDuration];
         }
-      }).slice(0, -1);
     }
     return [];
   });
 
+  console.log(sequence);
+  
   let time = audioCtx.currentTime;
   sequence.forEach((duration) => {
     oscillator.frequency.setValueAtTime(800, time);
