@@ -224,6 +224,11 @@ a {
     color: #1A5F80;
 }
 
+.chatbot-left>span{
+    /* spanが切れる位置でのみ改行 */
+    display: inline-block;
+}
+
 /*自分の吹き出し*/
 .chatbot-right {
     margin-right: 20px;

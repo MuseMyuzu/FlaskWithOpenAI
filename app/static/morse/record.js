@@ -159,9 +159,9 @@ function robotOutput(content_text) {
     const div = document.createElement('div');
     li.appendChild(div);
     div.classList.add('chatbot-left');
-    // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、半角の空白→半角×3）
-    const botText2byte = content_text.replace(/-/g, "ー").replace(/\.(?!])/g, "・").replace(/ /g, "   ");
-    div.textContent = botText2byte;
+    // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、空白はなおさない）
+    const botText2byte = content_text.replace(/-/g, "ー").replace(/\.(?!])/g, "・");
+    div.innerHTML = splitSpan(botText2byte);
     chatSubmitBtn.disabled = false;
 
     // 一番下までスクロール
@@ -187,6 +187,18 @@ function robotOutput(content_text) {
 
 function goToSettings(){
   location.assign("/settings");
+}
+
+// テキストを半角スペースの位置で区切って、spanタグにそれぞれ入れる
+function splitSpan(text){
+  const splitStr = text.split(" ");
+
+  var htmlContent = "";
+  for (let i = 0; i < splitStr.length; i++) {
+    // 全角スペースを付して、span要素に入れる
+    htmlContent += "<span>" + splitStr[i] + "　</span>";
+  }
+  return htmlContent;
 }
 
 
