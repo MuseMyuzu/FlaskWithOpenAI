@@ -11,14 +11,8 @@ function backToHome() {
     // モールスの速さ（duration）を取得
     const durRangeDiv = document.getElementById("dur-range");
     const durRangeValue = durRangeDiv.value;
-    const durDict = {1: 35, 2: 50, 3: 75, 4: 100, 5: 150};
-    // 値が設定されてない場合、スピードに3を代入
-    if(durRangeValue < 1 && 5 < durRangeValue){
-        durRangeValue = 3;
-    }
-    const duration = durDict[durRangeValue];
     
-    location.assign("/?dur=" + duration);
+    location.assign("/?dur=" + durRangeValue);
 }
 
 function switchToEnglish(){
