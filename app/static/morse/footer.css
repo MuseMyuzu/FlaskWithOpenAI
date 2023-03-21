@@ -33,6 +33,7 @@
     height: 37.5px;
     margin: auto;
     margin-left: 15px;
+    margin-right: 15px;
     border-radius: 50px;
     box-sizing: content-box;
     background-color: #cb494933;
@@ -80,19 +81,52 @@
 
 /* 音量アイコン */
 #volume-icon {
-    display: block;
+    /* display: block; */
     margin: auto;
+    margin-left: 0px;
+    margin-right: 0px;
     color: #335C80;
 }
 /* 音量スライダー */
 .range {
     margin: auto;
+    margin-left: 15px;
 }
 input[type="range"]{
     cursor: pointer;
+    position: relative;
+    appearance: none;
+    background-color: #cccccc;
+    height: 5px;
     width: 80px;
+    top: -2px;
+    border-radius: 5px;
+}
+input[type="range"]::-webkit-slider-thumb{
+    cursor: pointer;
+    appearance: none;
+    background: #335C80;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
 }
+input[type="range"]::-moz-range-thumb{
+    cursor: pointer;
+    appearance: none;
+    background: #335C80;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+input[type="range"]::-ms-thumb{
+    cursor: pointer;
+    appearance: none;
+    background: #335C80;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
 
 /*録音中のボタン*/
 #rec {

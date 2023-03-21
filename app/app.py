@@ -49,7 +49,8 @@ def save_wav():
 # ホームページ
 @app.route('/')
 def home():
-    return render_template('index.html')
+    duration = request.args.get("dur", "")
+    return render_template('index.html', dur=duration)
 
 # 設定・リンク等
 @app.route("/settings")

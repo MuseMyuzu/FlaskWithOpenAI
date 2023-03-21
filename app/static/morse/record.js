@@ -84,11 +84,8 @@ navigator.mediaDevices.getUserMedia({
       chatToBottom();
 
       // ボット吹き出し
-      // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、半角の空白→半角×3）
-      const botText2byte = botText.replace(/-/g, "ー").replace(/\.(?!])/g, "・").replace(/ /g, "   ");
-      robotOutput(botText2byte);
-      playMorseCode(botText);
-      console.log(botText2byte);
+      robotOutput(botText);
+      console.log(botText);
 
       chunks = [];
     }
@@ -162,11 +159,16 @@ function robotOutput(content_text) {
     const div = document.createElement('div');
     li.appendChild(div);
     div.classList.add('chatbot-left');
-    div.textContent = content_text;
+    // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、半角の空白→半角×3）
+    const botText2byte = content_text.replace(/-/g, "ー").replace(/\.(?!])/g, "・").replace(/ /g, "   ");
+    div.textContent = botText2byte;
     chatSubmitBtn.disabled = false;
 
     // 一番下までスクロール
     chatToBottom();
+
+    // モールス信号再生
+    playMorseCode(content_text);
 
   }, 2000);
 

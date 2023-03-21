@@ -1,6 +1,13 @@
 {% extends 'settings.html' %}
 
 {% block app_explanation %}
+<h2>設定</h2>
+<h3>モールススピード</h3>
+<div class="range">
+    <!-- モールスの速さを5段階で設定する。初期値は3 -->
+    <input type="range" min="1" max="5" step="1" value="3" id="dur-range">
+</div>
+
 <h2>遊び方</h2>
 <h3>話す</h3>
 <p>「話す」を押すと録音が始まり、「送信」を押すと録音が停止して音声がサーバに送信されます。</p>
