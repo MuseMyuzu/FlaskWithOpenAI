@@ -56,7 +56,7 @@ def home():
 @app.route("/settings")
 def settings_morse_ja():
     return render_template("morse/settings_morse_ja.html")
-@app.route("/settings/en")
+@app.route("/settings-en")
 def settings_morse_en():
     return render_template("morse/settings_morse_en.html")
 

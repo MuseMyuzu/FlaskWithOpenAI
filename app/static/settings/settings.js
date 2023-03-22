@@ -16,14 +16,11 @@ function backToHome() {
 }
 
 function switchToEnglish(){
-    // /enを付与
-    location.assign("/en");
+    location.assign("./settings-en");
 }
 
 function switchToJapanese(){
-    // /enを削除
-    const str = location.pathname;
-    location.assign(str.substring(0, str.length - 3));
+    location.assign("./settings");
 }
 
 // PC用の拡大縮小機能
