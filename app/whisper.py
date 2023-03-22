@@ -1,10 +1,6 @@
-import requests
 import os
 import openai
 from dotenv import load_dotenv
-
-# Whisper APIのエンドポイントURL
-url = 'https://api.dls.nitech.ac.jp/v2/whisper'
 
 # APIキー
 load_dotenv(".envs")

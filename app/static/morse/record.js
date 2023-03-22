@@ -186,7 +186,7 @@ function robotOutput(content_text) {
 }
 
 function goToSettings(){
-  location.assign("/settings");
+  location.assign("settings");
 }
 
 // テキストを半角スペースの位置で区切って、spanタグにそれぞれ入れる

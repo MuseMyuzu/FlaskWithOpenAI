@@ -17,7 +17,7 @@ function backToHome() {
 
 function switchToEnglish(){
     // /enを付与
-    location.assign(location.pathname + "/en");
+    location.assign("en");
 }
 
 function switchToJapanese(){
