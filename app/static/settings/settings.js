@@ -12,12 +12,12 @@ function backToHome() {
     const durRangeDiv = document.getElementById("dur-range");
     const durRangeValue = durRangeDiv.value;
     
-    location.assign("/?dur=" + durRangeValue);
+    location.assign("./?dur=" + durRangeValue);
 }
 
 function switchToEnglish(){
     // /enを付与
-    location.assign("en");
+    location.assign("/en");
 }
 
 function switchToJapanese(){
