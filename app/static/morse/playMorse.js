@@ -32,7 +32,7 @@ function playMorseCode(text) {
   const durationDiv = document.getElementById("duration");
   var durNumber = Number(durationDiv.textContent);
   // 値が設定されてない場合、スピードに3を代入
-  if(1 <= durNumber && durNumber < 5){
+  if(1 <= durNumber && durNumber <= 5){
     ;
   }else{
       durNumber = 3;
