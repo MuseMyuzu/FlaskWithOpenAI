@@ -3,15 +3,16 @@ import whisper
 import morse
 import json
 import pykakasi
+import uuid
+import os
 
 app = Flask(__name__)
 
-# 録音した音声を一時的に保存するファイル名
-WEBM_FILE = 'recording.webm'
-
 # 録音した音声データを保存する
-@app.route('/save_wav', methods=['POST'])
+@app.route('/save_audio', methods=['POST'])
 def save_wav():
+    # 録音した音声を一時的に保存するファイル名
+    WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
     # javascriptからファイルを受け取る
     audio_file = request.files["audio_data"]
     lang_file = request.files["lang"]
@@ -37,12 +38,10 @@ def save_wav():
     print(morse_text)
 
     result_dict = dict(user_text=text, bot_text=morse_text)
+
+    os.remove(WEBM_FILE)
     
     # jsonを返す
-    """
-    response_data = {"status": "success"}
-    return jsonify(response_data)
-    """
     return json.dumps(result_dict)
     
 

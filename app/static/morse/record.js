@@ -58,7 +58,7 @@ navigator.mediaDevices.getUserMedia({
     fd.append("lang", langFile, "lang.text")
     // フォームを送信する
     async function postAudio(){
-      var r = await fetch("./save_wav", {
+      var r = await fetch("./save_audio", {
         method: "POST",
         body: fd
       });

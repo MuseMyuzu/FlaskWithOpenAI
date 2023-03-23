@@ -11,4 +11,5 @@ def speechfile_to_text(filename, lang):
     # 文字起こし
     transcript = openai.Audio.transcribe("whisper-1", audio_file, language=lang)
     text = transcript["text"]
+    audio_file.close()
     return text
