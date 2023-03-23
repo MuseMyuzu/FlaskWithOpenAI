@@ -62,7 +62,15 @@ navigator.mediaDevices.getUserMedia({
         method: "POST",
         body: fd
       });
-      var resJson = await r.json();
+      //var resJson = await r.json();
+      var data = await r.text();
+      // }以下のテキストを削除（なぜかjsonの中身が後ろにつく）
+      let index = data.indexOf("}");
+      if (index !== -1) {
+        data = data.substring(0, index + 1);
+      }
+      const resJson = JSON.parse(data);
+      console.log(resJson);
 
       // 送信中アニメーション削除
       userLoadingDiv.remove();
