@@ -1,0 +1,27 @@
+#chatbot-header {
+    background: #335C80;
+}
+#chatbot-zoom-icon:active {
+    background: #4D7999;
+}
+
+/*相手の吹き出しのデザイン*/
+.chatbot-left {
+    background: #E6F0F7;
+    color: #1A5F80;
+}
+.chatbot-left-rounded {
+    background: #E6F0F7;
+    color: #1A5F80;
+}
+
+/*自分の吹き出し*/
+.chatbot-right {
+    background: #456F99;
+    color: #FFF;
+}
+
+/*---------- ロボット考え中アニメーション ----------*/
+#robot-loading-field>span {
+    color: #335C80;
+}
