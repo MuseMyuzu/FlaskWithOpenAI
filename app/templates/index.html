@@ -16,58 +16,67 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <!-- Google マテリアル使用（全画面ボタンなど））-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href= "https://fonts.googleapis.com/icon?family=Material+Icons" rel= "stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
-<link rel= "stylesheet" href="static/style.css" type="text/css">
-<link rel= "stylesheet" href="static/morse/footer.css" type="text/css">
+<link rel="stylesheet" href="static/style.css" type="text/css">
+<link rel="stylesheet" href="static/morse/footer.css" type="text/css">
+<link rel="stylesheet" href="static/menu/hamburger_menu.css" type="text/css">
 {% endblock %}
 
 {% block body %}
-    <div id= "chatbot">
-        
-        <div id= "chatbot-header">
-            <div id= "chatbot-logo">モールス変換</div>
-            <i id= "settings-icon" class="material-icons" onclick= "goToSettings()">settings</i>
-            <i id= "chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick= "chatbotZoom()">fullscreen</i>
-        </div>
+<div id="chatbot">
 
-        <div id= "chatbot-body">
-            <ul id= "chatbot-ul"></ul>
-        </div>
-
-        <!--フッター-->
-        <form onsubmit= "return false">
-            <div id= "chatbot-footer">
-                <!-- 言語トグル -->
-                <label class="toggle-button-004">
-                    <input type="checkbox" id="lang-toggle"/>
-                </label>
-                <!-- 音量アイコンとスライダー -->
-                <i id= "volume-icon" class="material-icons">volume_up</i>
-                <div class="range">
-                    <div id="range-bar"></div>
-                    <input type="range" min="0" max="0.1" step="0.001" value="0.05" id="volume-range">
-                </div>
-                <!-- 送信ボタン -->
-                <div id="rec"></div>
-                <button id="chatbot-submit">
-                    <i id="chatbot-submit-speak" class="material-icons">record_voice_over</i>
-                    <i id="chatbot-submit-send" class="material-icons">send</i>
-                </button>
-                
-            </div>
-        </form>
-
-        <form method="POST" action="/save_wav">
-            <input type="hidden" name="audio_data" id="audio-data">
-        </form>
-
-        <div style="display:none;" id="duration">{{dur}}</div>
-
+    <div id="chatbot-header">
+        <i id="menu-icon" class="material-icons" onclick="toggleMenu()">menu</i>
+        <div id="chatbot-logo">モールス変換</div>
+        <i id="settings-icon" class="material-icons" onclick="goToSettings()">settings</i>
+        <i id="chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick="chatbotZoom()">fullscreen</i>
     </div>
-    
+
+    <nav class="menu">
+        <ul>
+            <li><a href="#">モールス変換 Morse Converter</a></li>
+        </ul>
+    </nav>
+
+    <div id="chatbot-body">
+        <ul id="chatbot-ul"></ul>
+    </div>
+
+    <!--フッター-->
+    <form onsubmit="return false">
+        <div id="chatbot-footer">
+            <!-- 言語トグル -->
+            <label class="toggle-button-004">
+                <input type="checkbox" id="lang-toggle" />
+            </label>
+            <!-- 音量アイコンとスライダー -->
+            <i id="volume-icon" class="material-icons">volume_up</i>
+            <div class="range">
+                <div id="range-bar"></div>
+                <input type="range" min="0" max="0.1" step="0.001" value="0.05" id="volume-range">
+            </div>
+            <!-- 送信ボタン -->
+            <div id="rec"></div>
+            <button id="chatbot-submit">
+                <i id="chatbot-submit-speak" class="material-icons">record_voice_over</i>
+                <i id="chatbot-submit-send" class="material-icons">send</i>
+            </button>
+
+        </div>
+    </form>
+
+    <form method="POST" action="/save_wav">
+        <input type="hidden" name="audio_data" id="audio-data">
+    </form>
+
+    <div style="display:none;" id="duration">{{dur}}</div>
+
+</div>
+
 <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="static/morse/playMorse.js"></script>
 <script src="static/morse/record.js"></script>
+<script src="static/menu/hamburger_menu.js"></script>
 {% endblock %}

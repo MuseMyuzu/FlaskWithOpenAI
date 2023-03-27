@@ -1,0 +1,46 @@
+#menu-icon {
+    display: block;
+    height: 100%;
+    line-height: 60px;
+    position: relative;
+    margin-left: 20px;
+    color: #FFF;
+    cursor: pointer;
+}
+
+/* メニュー要素 */
+nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #497093;
+    color: #fff;
+  }
+  
+  .menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+    width: 80%;
+    overflow: hidden;
+    transition: height 1.5s ease-in-out;
+    /* 前面に表示 */
+    z-index: 20;
+  }
+  
+  .menu li {
+    margin: 10px 0;
+  }
+  
+  .menu li a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .menu.open {
+    height: auto;
+  }
