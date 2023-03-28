@@ -32,6 +32,8 @@
 # Copyright 2014 miurahr
 
 from flask import Flask, render_template, request, jsonify
+import sys
+sys.path.append("../common/python")
 import whisper
 import morse
 import json
@@ -39,7 +41,8 @@ import pykakasi
 import uuid
 import os
 
-app = Flask(__name__)
+# テンプレート、staticはFlaskWithOpenAIフォルダから
+app = Flask(__name__, static_url_path="", static_folder="../", template_folder="../")
 
 # 録音した音声データを保存する
 @app.route('/save_audio', methods=['POST'])
@@ -82,15 +85,15 @@ def save_wav():
 @app.route('/')
 def home():
     duration = request.args.get("dur", "")
-    return render_template('index.html', dur=duration)
+    return render_template('./speech-to-morse/templates/index.html', dur=duration)
 
 # 設定・リンク等
 @app.route("/settings")
 def settings_morse_ja():
-    return render_template("morse/settings_morse_ja.html")
+    return render_template("./speech-to-morse/templates/morse/settings_morse_ja.html")
 @app.route("/settings-en")
 def settings_morse_en():
-    return render_template("morse/settings_morse_en.html")
+    return render_template("./speech-to-morse/templates/morse/settings_morse_en.html")
 
 # サーバ起動
 if __name__ == '__main__':
