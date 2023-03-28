@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href= "https://fonts.googleapis.com/icon?family=Material+Icons" rel= "stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/style.css" type="text/css">
-<link rel="stylesheet" href="static/color.css" type="text/css">
+<link rel="stylesheet" href="./common/static/style.css" type="text/css">
+<link rel="stylesheet" href="./common/static/color.css" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -62,6 +62,7 @@
     </div>
 
 </div>
-<link rel="stylesheet" href="static/settings/settings.css" type="text/css">
-<script src="static/settings/settings.js"></script>
+<link rel="stylesheet" href="./common/static/settings/settings.css" type="text/css">
+{% block scripts %}{% endblock %}
 {% endblock %}
+
