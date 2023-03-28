@@ -21,6 +21,10 @@
     color: #FFF;
 }
 
+#error{
+    color: #ff6565
+}
+
 /*---------- ロボット考え中アニメーション ----------*/
 #robot-loading-field>span {
     color: #335C80;
