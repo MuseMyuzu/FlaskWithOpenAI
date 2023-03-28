@@ -1,4 +1,4 @@
-{% extends 'settings_en.html' %}
+{% extends './common/templates/settings_en.html' %}
 
 {% block app_explanation %}
 <h2>Settings</h2>
@@ -40,4 +40,8 @@
     <li>If you have any problems, 
         please let us know via Twitter or other means using the link below.</li>
 </ul>
+{% endblock %}
+
+{% block scripts %}
+<script src="./speech-to-morse/static/settings/settings.js"></script>
 {% endblock %}

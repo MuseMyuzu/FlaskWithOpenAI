@@ -53,6 +53,25 @@ navigator.mediaDevices.getUserMedia({
     userLoadingDiv.innerHTML = '<div id= "user-loading-field"><span id= "user-loading-circle1" class="material-icons">circle</span> <span id= "user-loading-circle2" class="material-icons">circle</span> <span id= "user-loading-circle3" class="material-icons">circle</span>';
     console.log('送信中');
 
+    // ファイルサイズが20MB以上の場合、送信しない
+    if(blob.size > 20 * 1024 * 1024){
+      // 送信中アニメーション削除
+      userLoadingDiv.remove();
+
+      // このdivにテキストを指定
+      const div = document.createElement('div');
+      li.appendChild(div);
+      div.classList.add('chatbot-right');
+      div.innerHTML = "<span id='error'>ファイルサイズが大きすぎるため、送信されません。</span>";
+
+      // 一番下までスクロール
+      chatToBottom();
+
+      chunks = [];
+
+      return;
+    }
+
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
     fd.append("lang", langFile, "lang.text")

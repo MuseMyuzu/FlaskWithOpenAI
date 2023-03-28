@@ -9,19 +9,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -->
 
-{% extends 'base.html' %}
+{% extends './common/templates/base.html' %}
 
 {% block head %}
+<meta name="description" content="話し声を録音しモールス信号に変換します。電信の音（トンツー）も鳴ります。OpenAIのWhisperAPIという文字起こしサービスを利用しました。">
 <title>モールス変換 - Morse Converter</title>
 <!-- Google マテリアル使用（全画面ボタンなど））-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/style.css" type="text/css">
-<link rel="stylesheet" href="static/color.css" type="text/css">
-<link rel="stylesheet" href="static/morse/footer.css" type="text/css">
-<link rel="stylesheet" href="static/menu/hamburger_menu.css" type="text/css">
+<link rel="stylesheet" href="./common/static/style.css" type="text/css">
+<link rel="stylesheet" href="./speech-to-morse/static/color.css" type="text/css">
+<link rel="stylesheet" href="./speech-to-morse/static/morse/footer.css" type="text/css">
+<link rel="stylesheet" href="./common/static/menu/hamburger_menu.css" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -36,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     <nav class="menu">
         <ul>
-            <li><a href="#">モールス変換 Morse Converter</a></li>
+            <li><a href="./">モールス変換 Morse Converter</a></li>
         </ul>
     </nav>
 
@@ -77,7 +78,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="static/morse/playMorse.js"></script>
-<script src="static/morse/record.js"></script>
-<script src="static/menu/hamburger_menu.js"></script>
+<script src="./speech-to-morse/static/morse/playMorse.js"></script>
+<script src="./speech-to-morse/static/morse/record.js"></script>
+<script src="./common/static/menu/hamburger_menu.js"></script>
 {% endblock %}

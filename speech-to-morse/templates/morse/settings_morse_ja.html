@@ -1,4 +1,4 @@
-{% extends 'settings.html' %}
+{% extends './common/templates/settings.html' %}
 
 {% block app_explanation %}
 <h2>設定</h2>
@@ -36,4 +36,8 @@
         文字起こしが完了したら、すぐに音声は削除します。</li>
     <li>不具合などありましたら、下のリンクからTwitterなどで教えていただけると助かります。</li>
 </ul>
+{% endblock %}
+
+{% block scripts %}
+<script src="./speech-to-morse/static/settings/settings.js"></script>
 {% endblock %}
