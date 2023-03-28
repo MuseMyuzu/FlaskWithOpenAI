@@ -3,7 +3,7 @@ import openai
 from dotenv import load_dotenv
 
 # APIキー
-load_dotenv(".envs")
+load_dotenv()
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 def speechfile_to_text(filename, lang):
