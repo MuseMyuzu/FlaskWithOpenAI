@@ -31,12 +31,15 @@
  できたら、appフォルダ内に「.envs」ファイルを作成し、
  ``` OPENAI_API_KEY = "あなたのAPIキー" ```
  を入力します。
+
+## audioフォルダの作成
+ speech-to-morseフォルダ内に audio フォルダを作ってください
  
 ## 実行
  1. 仮想環境を立ち上げます。
  ``` .venv\Scripts\activate.ps1 ```
  
- 2. appフォルダ内に移動（``` cd app ```など）
+ 2. appフォルダ内に移動（``` cd speech-to-morse ```など）
  
  3. 初回のみ、``` set FLASK_APP=app.py ```を入力・実行
  
