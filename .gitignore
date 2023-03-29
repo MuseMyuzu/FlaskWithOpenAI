@@ -157,3 +157,5 @@ cython_debug/
 *.wav
 *.mp3
 app/recording.webm
+
+google_code.html
