@@ -96,6 +96,11 @@ navigator.mediaDevices.getUserMedia({
 
       var userText = resJson.user_text;
       var botText = resJson.bot_text;
+      var botSpeech = resJson.bot_speech;
+
+      const decoded_utf8str = atob(botSpeech);
+      var decoded_audio = new Blob(decoded_utf8str, { 'type': 'audio/mp3' });
+      console.log(URL.createObjectURL(decoded_audio));
 
       // ユーザー吹き出し
       // ユーザテキストが空の場合、エラー

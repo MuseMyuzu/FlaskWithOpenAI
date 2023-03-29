@@ -1,5 +1,5 @@
 import os
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'secret-key.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '../common/python/secret-key.json'
 from google.cloud import texttospeech
 
 # クライアントをインスタンス化します

@@ -82,6 +82,7 @@ def save_wav():
     print(text)
 
     speech_data = text_to_speech.text_to_speech(text, lang_text)
+    # base64形式にして、decode("utf-8")によってStringにする
     speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
 
     result_dict = dict(user_text=text, bot_speech=speech_data_base64)
