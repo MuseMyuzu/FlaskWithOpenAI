@@ -1,0 +1,43 @@
+{% extends './common/templates/settings.html' %}
+
+{% block app_explanation %}
+<h2>設定</h2>
+<h3>モールススピード</h3>
+<div class="range">
+    <!-- モールスの速さを5段階で設定する。初期値は3 -->
+    <input type="range" min="1" max="5" step="1" value="3" id="dur-range">
+</div>
+
+<h2>遊び方</h2>
+<h3>話す</h3>
+<p><i class="material-icons" style="color: #333">record_voice_over</i>
+    を押すと録音が始まり、
+    <i class="material-icons" style="color: #333">send</i>を押すと
+    録音が停止して音声がサーバに送信されます。</p>
+<h4>モールス信号</h4>
+<ul>
+    <li>「・」はトン、「ー」はツーです。</li>
+    <li>モールスに変換できない文字は[]で囲まれます。</li>
+</ul>
+
+<h3>言語</h3>
+<p>左下の選択バーで話す言語を選択できます。日本語を話すなら「Ja」、英語を話すなら「En」を選択します。</p>
+
+<h3>音量</h3>
+<p><i class="material-icons" style="color: #333">volume_up</i>
+    でボリューム調整できます。左が消音、右にいくほど音量が大きくなります。</p>
+
+<h3>全画面</h3>
+<p>PCでは右上の<i class="material-icons" style="color: #333">fullscreen</i>から全画面に切り替えることができます。もう一度押すと戻ります。</p>
+
+<h2>注意</h2>
+<ul>
+    <li>音声データが私の契約するサーバに送られますが、このアプリ以外には利用しません。<br>
+        文字起こしが完了したら、すぐに音声は削除します。</li>
+    <li>不具合などありましたら、下のリンクからTwitterなどで教えていただけると助かります。</li>
+</ul>
+{% endblock %}
+
+{% block scripts %}
+<script src="./speech-to-morse/static/settings/settings.js"></script>
+{% endblock %}

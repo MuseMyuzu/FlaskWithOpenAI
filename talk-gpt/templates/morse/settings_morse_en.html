@@ -1,0 +1,47 @@
+{% extends './common/templates/settings_en.html' %}
+
+{% block app_explanation %}
+<h2>Settings</h2>
+<h3>Morse Speed</h3>
+<div class="range">
+    <!-- モールスの速さを5段階で設定する。初期値は3 -->
+    <input type="range" min="1" max="5" step="1" value="3" id="dur-range">
+</div>
+
+<h2>How To Use</h2>
+<h3>Speaking</h3>
+<p>Pressing <i class="material-icons" style="color: #333">record_voice_over</i> 
+    starts recording, 
+    and pressing <i class="material-icons" style="color: #333">send</i>
+     stops recording and sends your voice to the server.</p>
+<h4>Morse Code</h4>
+    <ul>
+        <li>"・" is dot, and "ー" is dash.</li>
+        <li>Characters that cannot be converted to Morse Code are enclosed in [].</li>
+    </ul>
+
+<h3>Language</h3>
+<p>The selection bar in the lower left corner allows you to choose the language you speak.
+     Select "Ja" to speak Japanese or "En" to speak English.</p>
+
+<h3>Volume</h3>
+<p>The volume can be adjusted with <i class="material-icons" style="color: #333">volume_up</i>. 
+    The left side is mute, and the volume gets louder as you move to the right.</p>
+
+<h3>Full Screen</h3>
+<p>On a PC, you can switch to full screen from <i class="material-icons" style="color: #333">fullscreen</i> 
+    in the upper right corner. Press again to return.</p>
+
+<h2>Caution</h2>
+<ul>
+    <li>Your voice data will be sent to my contracted server, 
+        but will not be used for anything other than this application. 
+        The audio will be deleted as soon as the transcription is complete.</li>
+    <li>If you have any problems, 
+        please let us know via Twitter or other means using the link below.</li>
+</ul>
+{% endblock %}
+
+{% block scripts %}
+<script src="./speech-to-morse/static/settings/settings.js"></script>
+{% endblock %}

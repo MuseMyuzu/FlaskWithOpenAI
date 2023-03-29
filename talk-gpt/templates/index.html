@@ -1,0 +1,84 @@
+<!--
+Copyright (c) 2023 by MF3PGM (https://codepen.io/masa_mf3/pen/WNpjJzM)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-->
+
+{% extends './common/templates/base.html' %}
+
+{% block head %}
+<meta name="description" content="話し声を録音しモールス信号に変換します。電信の音（トンツー）も鳴ります。OpenAIのWhisperAPIという文字起こしサービスを利用しました。">
+<title>モールス変換 - Morse Converter</title>
+<!-- Google マテリアル使用（全画面ボタンなど））-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./common/static/style.css" type="text/css">
+<link rel="stylesheet" href="./speech-to-morse/static/color.css" type="text/css">
+<link rel="stylesheet" href="./speech-to-morse/static/morse/footer.css" type="text/css">
+<link rel="stylesheet" href="./common/static/menu/hamburger_menu.css" type="text/css">
+{% endblock %}
+
+{% block body %}
+<div id="chatbot">
+
+    <div id="chatbot-header">
+        <i id="menu-icon" class="material-icons" onclick="toggleMenu()">menu</i>
+        <div id="chatbot-logo">モールス変換</div>
+        <i id="settings-icon" class="material-icons" onclick="goToSettings()">settings</i>
+        <i id="chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick="chatbotZoom()">fullscreen</i>
+    </div>
+
+    <nav class="menu">
+        <ul>
+            <li><a href="./">モールス変換 Morse Converter</a></li>
+        </ul>
+    </nav>
+
+    <div id="chatbot-body">
+        <ul id="chatbot-ul"></ul>
+    </div>
+
+    <!--フッター-->
+    <form onsubmit="return false">
+        <div id="chatbot-footer">
+            <!-- 言語トグル -->
+            <label class="toggle-button-004">
+                <input type="checkbox" id="lang-toggle" />
+            </label>
+            <!-- 音量アイコンとスライダー -->
+            <i id="volume-icon" class="material-icons">volume_up</i>
+            <div class="range">
+                <div id="range-bar"></div>
+                <input type="range" min="0" max="0.1" step="0.001" value="0.05" id="volume-range">
+            </div>
+            <!-- 送信ボタン -->
+            <div id="rec"></div>
+            <button id="chatbot-submit">
+                <i id="chatbot-submit-speak" class="material-icons">record_voice_over</i>
+                <i id="chatbot-submit-send" class="material-icons">send</i>
+            </button>
+
+        </div>
+    </form>
+
+    <form method="POST" action="/save_wav">
+        <input type="hidden" name="audio_data" id="audio-data">
+    </form>
+
+    <div style="display:none;" id="duration">{{dur}}</div>
+
+</div>
+
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="./speech-to-morse/static/morse/playMorse.js"></script>
+<script src="./speech-to-morse/static/morse/record.js"></script>
+<script src="./common/static/menu/hamburger_menu.js"></script>
+{% endblock %}
