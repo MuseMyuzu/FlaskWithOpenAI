@@ -28,19 +28,16 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# pykakasi
-# Copyright 2014 miurahr
-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 import sys
 sys.path.append("../common/python")
 import whisper
-import morse
+import text_to_speech
 import json
-import pykakasi
 import uuid
 import os
 import datetime
+import base64
 
 # テンプレート、staticはFlaskWithOpenAIフォルダから
 app = Flask(__name__, static_url_path="", static_folder="../", template_folder="../")
@@ -84,15 +81,10 @@ def save_wav():
         text = text.translate(str.maketrans({"!": "！", "?": "？", "(": "（", ")": "）"}))
     print(text)
 
-    # ひらがなに変換
-    kks = pykakasi.kakasi()
-    kana_dict = kks.convert(text)
-    kana_text = ''.join([item['hira'] for item in kana_dict])
-    
-    morse_text = morse.convert_to_morse_code(kana_text)
-    print(morse_text)
+    speech_data = text_to_speech.text_to_speech(text, lang_text)
+    speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
 
-    result_dict = dict(user_text=text, bot_text=morse_text)
+    result_dict = dict(user_text=text, bot_speech=speech_data_base64)
 
     os.remove(WEBM_FILE)
     # 1日以上経過したものは削除
