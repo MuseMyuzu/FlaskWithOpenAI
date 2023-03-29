@@ -35,11 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         <i id="chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick="chatbotZoom()">fullscreen</i>
     </div>
 
-    <nav class="menu">
-        <ul>
-            <li><a href="./">モールス変換 Morse Converter</a></li>
-        </ul>
-    </nav>
+    {% include './common/templates/menu/menu.html' %}
 
     <div id="chatbot-body">
         <ul id="chatbot-ul"></ul>

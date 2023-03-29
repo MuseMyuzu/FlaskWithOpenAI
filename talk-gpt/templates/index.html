@@ -13,15 +13,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 {% block head %}
 <meta name="description" content="話し声を録音しモールス信号に変換します。電信の音（トンツー）も鳴ります。OpenAIのWhisperAPIという文字起こしサービスを利用しました。">
-<title>モールス変換 - Morse Converter</title>
+<title>TalkGPT</title>
 <!-- Google マテリアル使用（全画面ボタンなど））-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./common/static/style.css" type="text/css">
-<link rel="stylesheet" href="./speech-to-morse/static/color.css" type="text/css">
-<link rel="stylesheet" href="./speech-to-morse/static/morse/footer.css" type="text/css">
+<link rel="stylesheet" href="./talk-gpt/static/color.css" type="text/css">
+<link rel="stylesheet" href="./talk-gpt/static/talkgpt/footer.css" type="text/css">
 <link rel="stylesheet" href="./common/static/menu/hamburger_menu.css" type="text/css">
 {% endblock %}
 
@@ -35,11 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         <i id="chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick="chatbotZoom()">fullscreen</i>
     </div>
 
-    <nav class="menu">
-        <ul>
-            <li><a href="./">モールス変換 Morse Converter</a></li>
-        </ul>
-    </nav>
+    {% include './common/templates/menu/menu.html' %}
 
     <div id="chatbot-body">
         <ul id="chatbot-ul"></ul>
@@ -78,7 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="./speech-to-morse/static/morse/playMorse.js"></script>
-<script src="./speech-to-morse/static/morse/record.js"></script>
+<script src="./talk-gpt/static/talkgpt/playMorse.js"></script>
+<script src="./talk-gpt/static/talkgpt/record.js"></script>
 <script src="./common/static/menu/hamburger_menu.js"></script>
 {% endblock %}

@@ -106,15 +106,15 @@ def save_wav():
 @app.route('/')
 def home():
     duration = request.args.get("dur", "")
-    return render_template('./speech-to-morse/templates/index.html', dur=duration)
+    return render_template('./talk-gpt/templates/index.html', dur=duration)
 
 # 設定・リンク等
 @app.route("/settings")
-def settings_morse_ja():
-    return render_template("./speech-to-morse/templates/morse/settings_morse_ja.html")
+def settings_ja():
+    return render_template("./talk-gpt/templates/settings/settings_ja.html")
 @app.route("/settings-en")
-def settings_morse_en():
-    return render_template("./speech-to-morse/templates/morse/settings_morse_en.html")
+def settings_en():
+    return render_template("./talk-gpt/templates/settings/settings_en.html")
 
 # サーバ起動
 if __name__ == '__main__':
