@@ -81,6 +81,7 @@ navigator.mediaDevices.getUserMedia({
         method: "POST",
         body: fd
       });
+      /*
       //var resJson = await r.json();
       var data = await r.text();
       // }以下のテキストを削除（なぜかjsonの中身が後ろにつく）
@@ -124,6 +125,24 @@ navigator.mediaDevices.getUserMedia({
       console.log(botText);
 
       chunks = [];
+      */
+      const reader = r.body.getReader();
+
+      let chunks = [];
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = new TextDecoder().decode(value);
+        chunks.push(chunk);
+      }
+    
+      // データを複数回に分けて処理
+      let data = {};
+      for (let i = 0; i < chunks.length; i++) {
+        const chunk = JSON.parse(chunks[i]);
+        data = { ...data, ...chunk };
+        console.log(data);
+      }
     }
     postAudio();
   });

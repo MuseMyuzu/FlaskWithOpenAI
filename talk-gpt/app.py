@@ -28,7 +28,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, Response
 import sys
 sys.path.append("../common/python")
 import whisper
@@ -82,21 +82,30 @@ def save_wav():
     print(text)
 
     # chatgptに聞く
-    answer = chatgpt.ask(text)
+    answer = chatgpt.ask(text, lang_text)
+    for answer_part in answer:
+        print(answer_part, " ")
 
-    # chatgptの音声を作成
-    speech_data = text_to_speech.text_to_speech(answer, lang_text)
-    # base64形式にして、decode("utf-8")によってStringにする
-    speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
+    """
+    def generate():
+        # 複数回に分けてデータを返す
+        #yield jsonify({'user_text': text})
 
-    result_dict = dict(user_text=text, bot_text=answer, bot_speech=speech_data_base64)
-
+        for answer_part in answer:
+            # chatgptの音声を作成
+            speech_data = text_to_speech.text_to_speech(answer_part, lang_text)
+            # base64形式にして、decode("utf-8")によってStringにする
+            speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
+        yield jsonify({'bot_text': answer, 'bot_speech': speech_data_base64})
+    
+    # 録音した音声は削除
     os.remove(WEBM_FILE)
     # 1日以上経過したものは削除
     remove_old_files(AUDIO_PATH)
-    
+
     # jsonを返す
-    return json.dumps(result_dict)
+    return Response(generate(), mimetype="application/json")
+    """
     
 
 # ホームページ
