@@ -27,6 +27,9 @@ def ask(question, lang):
                 response_text += content
                 sentence += content
             if content in target_char:
-                yield sentence
+                # 一文を送る。送った後にsentenceを空にするため、別の変数へ
+                response_text = sentence
+                sentence = ""
+                yield response_text
     #else:  
     #    messages += [{'role': 'assistant', 'content': response_text}]

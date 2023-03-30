@@ -93,7 +93,8 @@ def save_wav():
             speech_data = text_to_speech.text_to_speech(answer_part, lang_text)
             # base64形式にして、decode("utf-8")によってStringにする
             speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
-        yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
+            print(answer_part)
+            yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
         
     # 録音した音声は削除
     os.remove(WEBM_FILE)

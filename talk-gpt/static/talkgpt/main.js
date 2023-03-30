@@ -81,67 +81,34 @@ navigator.mediaDevices.getUserMedia({
         method: "POST",
         body: fd
       });
-      /*
-      //var resJson = await r.json();
-      var data = await r.text();
-      // }以下のテキストを削除（なぜかjsonの中身が後ろにつく）
-      let index = data.indexOf("}");
-      if (index !== -1) {
-        data = data.substring(0, index + 1);
-      }
-      const resJson = JSON.parse(data);
-      console.log(resJson);
-
-      // 送信中アニメーション削除
-      userLoadingDiv.remove();
-
-      var userText = resJson.user_text;
-      var botText = resJson.bot_text;
-      var botSpeech = resJson.bot_speech;
-
-      // 音声データの文字列をバイナリに変換
-      let decoded_audio_data = atob(botSpeech);
-      let audio_data = new Uint8Array(decoded_audio_data.length);
-      for (let i = 0; i < decoded_audio_data.length; i++) {
-        audio_data[i] = decoded_audio_data.charCodeAt(i);
-      }
-      let blob = new Blob([audio_data.buffer], { type: 'audio/mp3' });
-
-      // ユーザー吹き出し
-      // ユーザテキストが空の場合、エラー
-      if (!userText || !userText.match(/\S/g)) return false;
-
-      // このdivにテキストを指定
-      const div = document.createElement('div');
-      li.appendChild(div);
-      div.classList.add('chatbot-right');
-      div.textContent = userText;
-
-      // 一番下までスクロール
-      chatToBottom();
-
-      // ボット吹き出し
-      robotOutput(botText, blob);
-      console.log(botText);
-
-      chunks = [];
-      */
       const reader = r.body.getReader();
 
-      let chunks = [];
       while (true) {
+        // done: 送り切ったか, value: 送られてきたデータ
         const { done, value } = await reader.read();
         if (done) break;
+        // chunkには送られてきたjson（のテキスト）が入る
         const chunk = new TextDecoder().decode(value);
-        chunks.push(chunk);
-      }
-    
-      // データを複数回に分けて処理
-      let data = {};
-      for (let i = 0; i < chunks.length; i++) {
-        const chunk = JSON.parse(chunks[i]);
-        data = { ...data, ...chunk };
-        console.log(data);
+        const resJson = JSON.parse(chunk);
+
+        // 送信中アニメーション削除
+        userLoadingDiv.remove();
+
+        if("user_text" in resJson){
+          // ユーザー吹き出し
+          var userText = resJson.user_text;
+          userOutput(userText, li);
+        }else if("bot_text" in resJson && "bot_speech" in resJson){
+          // ボット吹き出し
+          var botText = resJson.bot_text;
+          var botSpeech = resJson.bot_speech;
+
+          // ボット吹き出し
+          robotOutput(botText, botSpeech);
+          console.log(botText);
+        }
+
+        chunks = [];
       }
     }
     postAudio();
@@ -176,14 +143,37 @@ function chatToBottom() {
   chatField.scroll(0, chatField.scrollHeight - chatField.clientHeight);
 }
 
+// --------------------ユーザーの投稿--------------------
+// 吹き出しのliも引数に入れる（送信中のアニメーションのために吹き出しが必要）
+function userOutput(content_text, li){
+  // ユーザテキストが空の場合、エラー
+  if (!content_text || !content_text.match(/\S/g)) return false;
+
+  // このdivにテキストを指定
+  const div = document.createElement('div');
+  li.appendChild(div);
+  div.classList.add('chatbot-right');
+  div.textContent = content_text;
+
+  // 一番下までスクロール
+  chatToBottom();
+}
 
 // --------------------ロボットの投稿--------------------
-function robotOutput(content_text, blob) {
+function robotOutput(content_text, botSpeech) {
   // 相手の返信が終わるまで、その間は返信不可にする
   // なぜなら、自分の返信を複数受け取ったことになり、その全てに返信してきてしまうから
   // 例："Hi!〇〇!"を複数など
 
   chatSubmitBtn.disabled = true;
+
+  // 音声データの文字列をバイナリに変換
+  let decoded_audio_data = atob(botSpeech);
+  let audio_data = new Uint8Array(decoded_audio_data.length);
+  for (let i = 0; i < decoded_audio_data.length; i++) {
+    audio_data[i] = decoded_audio_data.charCodeAt(i);
+  }
+  let blob = new Blob([audio_data.buffer], { type: 'audio/mp3' });
 
   // ulとliを作り、左寄せのスタイルを適用し投稿する
   const ul = document.getElementById('chatbot-ul');
