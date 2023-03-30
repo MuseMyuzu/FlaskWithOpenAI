@@ -50,7 +50,8 @@ function playAudio(audioData) {
     audioCtx.decodeAudioData(arrayBuffer, (decodedData) => {
       const source = audioCtx.createBufferSource();
       source.buffer = decodedData;
-      source.connect(audioCtx.destination);
+      source.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
       source.start();
     });
   };
