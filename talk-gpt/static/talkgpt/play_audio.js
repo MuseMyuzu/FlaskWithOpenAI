@@ -33,6 +33,7 @@ function playAudio(audioData) {
   // 初期音量を設定
   updateVolume();
 
+  /*
   audioCtx.decodeAudioData(audioData, (audioBuffer) => {
     audioSrc.buffer = audioBuffer;
     audioSrc.connect(gainNode);
@@ -41,6 +42,19 @@ function playAudio(audioData) {
 
     audioSrc.stop(audioCtx.currentTime + 100);
   })
+  */
+
+  const fileReader = new FileReader();
+  fileReader.onload = () => {
+    const arrayBuffer = fileReader.result;
+    audioCtx.decodeAudioData(arrayBuffer, (decodedData) => {
+      const source = audioCtx.createBufferSource();
+      source.buffer = decodedData;
+      source.connect(audioCtx.destination);
+      source.start();
+    });
+  };
+  fileReader.readAsArrayBuffer(audioData);
 }
 
 function updateVolume(){
