@@ -84,9 +84,14 @@ navigator.mediaDevices.getUserMedia({
       const reader = r.body.getReader();
 
       while (true) {
+        var robotLoadingDiv;
+        var bot_li;
         // done: 送り切ったか, value: 送られてきたデータ
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done) {
+          robotLoadingDiv.remove();
+          break;
+        };
         // chunkには送られてきたjson（のテキスト）が入る
         const chunk = new TextDecoder().decode(value);
         const resJson = JSON.parse(chunk);
@@ -94,18 +99,46 @@ navigator.mediaDevices.getUserMedia({
         // 送信中アニメーション削除
         userLoadingDiv.remove();
 
+        
         if("user_text" in resJson){
           // ユーザー吹き出し
           var userText = resJson.user_text;
           userOutput(userText, li);
+
+          // 一番下までスクロール
+          chatToBottom();
+
+          // ロボットの考え中アニメーション作成
+          const ul = document.getElementById('chatbot-ul');
+          bot_li = document.createElement('li');
+          bot_li.classList.add("left");
+          ul.appendChild(bot_li);
+          robotLoadingDiv = document.createElement('div');
+          bot_li.appendChild(robotLoadingDiv);
+          robotLoadingDiv.classList.add("chatbot-left");
+          robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
+          
         }else if("bot_text" in resJson && "bot_speech" in resJson){
-          // ボット吹き出し
           var botText = resJson.bot_text;
           var botSpeech = resJson.bot_speech;
 
+          // 考え中アニメーション削除
+          robotLoadingDiv.remove();
+
           // ボット吹き出し
-          robotOutput(botText, botSpeech);
+          robotOutput(botText, botSpeech, bot_li);
           console.log(botText);
+
+          // ロボットの考え中アニメーション作成
+          const ul = document.getElementById('chatbot-ul');
+          bot_li = document.createElement('li');
+          bot_li.classList.add("left");
+          ul.appendChild(bot_li);
+          robotLoadingDiv = document.createElement('div');
+          bot_li.appendChild(robotLoadingDiv);
+          robotLoadingDiv.classList.add("chatbot-left");
+          robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
+          
         }
 
         chunks = [];
@@ -151,7 +184,7 @@ function userOutput(content_text, li){
 
   // このdivにテキストを指定
   const div = document.createElement('div');
-  li.appendChild(div);
+  li?.appendChild(div);
   div.classList.add('chatbot-right');
   div.textContent = content_text;
 
@@ -160,7 +193,7 @@ function userOutput(content_text, li){
 }
 
 // --------------------ロボットの投稿--------------------
-function robotOutput(content_text, botSpeech) {
+function robotOutput(content_text, botSpeech, li) {
   // 相手の返信が終わるまで、その間は返信不可にする
   // なぜなら、自分の返信を複数受け取ったことになり、その全てに返信してきてしまうから
   // 例："Hi!〇〇!"を複数など
@@ -175,45 +208,19 @@ function robotOutput(content_text, botSpeech) {
   }
   let blob = new Blob([audio_data.buffer], { type: 'audio/mp3' });
 
-  // ulとliを作り、左寄せのスタイルを適用し投稿する
-  const ul = document.getElementById('chatbot-ul');
-  const li = document.createElement('li');
-  li.classList.add('left');
-  ul.appendChild(li);
+  // このdivにテキストを指定
+  const div = document.createElement('div');
+  li?.appendChild(div);
+  div.classList.add('chatbot-left');
+  div.textContent = content_text;
+  chatSubmitBtn.disabled = false;
 
-  // 考え中アニメーションここから
-  const robotLoadingDiv = document.createElement('div');
+  // 一番下までスクロール
+  chatToBottom();
 
-  setTimeout(() => {
-    li.appendChild(robotLoadingDiv);
-    robotLoadingDiv.classList.add('chatbot-left');
-    robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
-    console.log('考え中');
-    // 考え中アニメーションここまで
+  // 回答の音声再生
+  playAudio(blob);
 
-    // 一番下までスクロール
-    chatToBottom();
-  }, 800);
-
-  setTimeout( () => {
-
-    // 考え中アニメーション削除
-    robotLoadingDiv.remove();
-
-    // このdivにテキストを指定
-    const div = document.createElement('div');
-    li.appendChild(div);
-    div.classList.add('chatbot-left');
-    div.textContent = content_text;
-    chatSubmitBtn.disabled = false;
-
-    // 一番下までスクロール
-    chatToBottom();
-
-    // 回答の音声再生
-    playAudio(blob);
-
-  }, 2000);
 
   if (chatbotZoomState === 'large' && window.matchMedia('(min-width:700px)').matches) {
     document.querySelectorAll('.chatbot-left').forEach((cl) => {

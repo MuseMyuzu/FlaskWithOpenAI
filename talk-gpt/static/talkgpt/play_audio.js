@@ -33,17 +33,6 @@ function playAudio(audioData) {
   // 初期音量を設定
   updateVolume();
 
-  /*
-  audioCtx.decodeAudioData(audioData, (audioBuffer) => {
-    audioSrc.buffer = audioBuffer;
-    audioSrc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    audioSrc.start();
-
-    audioSrc.stop(audioCtx.currentTime + 100);
-  })
-  */
-
   const fileReader = new FileReader();
   fileReader.onload = () => {
     const arrayBuffer = fileReader.result;
