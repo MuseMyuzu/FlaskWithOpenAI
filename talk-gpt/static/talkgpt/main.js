@@ -98,32 +98,16 @@ navigator.mediaDevices.getUserMedia({
       var botText = resJson.bot_text;
       var botSpeech = resJson.bot_speech;
 
-      const decoded_utf8str = atob(botSpeech);
-      console.log("type = " + typeof(decoded_utf8str));
-      console.log("size = " + decoded_utf8str.length);
-      //var decoded_audio = new Blob([decoded_utf8str], { 'type': 'audio/mp3' });
-      // var decoded_audio = new Blob([new Uint8Array(decoded_utf8str)], {type: "audio/wav"});
       let decoded_audio_data = atob(botSpeech);
       let audio_data = new Uint8Array(decoded_audio_data.length);
       for (let i = 0; i < decoded_audio_data.length; i++) {
         audio_data[i] = decoded_audio_data.charCodeAt(i);
       }
 
-      let decoded_audio = new Blob([audio_data.buffer], { type: 'audio/mp3' });
-      console.log("type = " + typeof(decoded_audio));
-      console.log(decoded_audio);
-
-      /*
-      // ダウンロードリンクを作成
-      let download_link = document.createElement('a');
-      download_link.href = URL.createObjectURL(decoded_audio);
-      download_link.download = 'audio.mp3';
-      // ダウンロードリンクをクリック
-      download_link.click();
-      */
+      let blob = new Blob([audio_data.buffer], { type: 'audio/mp3' });
 
       const audio = document.createElement('audio');
-      audio.src = URL.createObjectURL(decoded_audio);
+      audio.src = URL.createObjectURL(blob);
       audio.controls = true;
       document.body.appendChild(audio);
 

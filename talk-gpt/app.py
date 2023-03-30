@@ -76,24 +76,19 @@ def save_wav():
     # テキストデータを保存
     lang_text = lang_file.read().decode("utf-8")
     
+    # 話した言葉を文字起こししてテキストに変換
     text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
     # 日本語の場合、記号を全角のものに置き換える
     if lang_text == "ja":
         text = text.translate(str.maketrans({"!": "！", "?": "？", "(": "（", ")": "）"}))
     print(text)
 
+    # 
     speech_data = text_to_speech.text_to_speech(text, lang_text)
-    print("type = " + str(type(speech_data)))
-    print("size = " + str(len(speech_data)))
     # base64形式にして、decode("utf-8")によってStringにする
     speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
-    print("type = " + str(type(speech_data_base64)))
 
     result_dict = dict(user_text=text, bot_speech=speech_data_base64)
-
-    audio = base64.b64decode(speech_data_base64.encode())
-    with open("audio.mp3", "wb") as f:
-        f.write(audio)
 
     os.remove(WEBM_FILE)
     # 1日以上経過したものは削除
