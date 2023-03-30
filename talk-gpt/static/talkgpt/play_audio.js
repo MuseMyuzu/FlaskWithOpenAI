@@ -4,7 +4,7 @@ let audioCtx;
 let audioSrc;
 let gainNode;
 
-// 録音開始ボタンを押されたら、モールス再生は停止する。
+// 録音開始ボタンを押されたら、再生は停止する。
 const submitBtn = document.getElementById('chatbot-submit');
 submitBtn.addEventListener('click', () => {
   audioSrc?.stop();
@@ -27,7 +27,6 @@ volumeControl.addEventListener('input', function() {
 // Web Audio APIを使用して音声を再生
 function playAudio(audioData) {
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  audioSrc = audioCtx.createBufferSource();
 
   gainNode = audioCtx.createGain();
   // 初期音量を設定
@@ -37,11 +36,11 @@ function playAudio(audioData) {
   fileReader.onload = () => {
     const arrayBuffer = fileReader.result;
     audioCtx.decodeAudioData(arrayBuffer, (decodedData) => {
-      const source = audioCtx.createBufferSource();
-      source.buffer = decodedData;
-      source.connect(gainNode);
+      audioSrc = audioCtx.createBufferSource();
+      audioSrc.buffer = decodedData;
+      audioSrc.connect(gainNode);
       gainNode.connect(audioCtx.destination);
-      source.start();
+      audioSrc.start();
     });
   };
   fileReader.readAsArrayBuffer(audioData);
