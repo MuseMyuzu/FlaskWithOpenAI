@@ -98,18 +98,13 @@ navigator.mediaDevices.getUserMedia({
       var botText = resJson.bot_text;
       var botSpeech = resJson.bot_speech;
 
+      // 音声データの文字列をバイナリに変換
       let decoded_audio_data = atob(botSpeech);
       let audio_data = new Uint8Array(decoded_audio_data.length);
       for (let i = 0; i < decoded_audio_data.length; i++) {
         audio_data[i] = decoded_audio_data.charCodeAt(i);
       }
-
       let blob = new Blob([audio_data.buffer], { type: 'audio/mp3' });
-
-      const audio = document.createElement('audio');
-      audio.src = URL.createObjectURL(blob);
-      audio.controls = true;
-      document.body.appendChild(audio);
 
       // ユーザー吹き出し
       // ユーザテキストが空の場合、エラー
@@ -125,7 +120,7 @@ navigator.mediaDevices.getUserMedia({
       chatToBottom();
 
       // ボット吹き出し
-      robotOutput(botText);
+      robotOutput(botText, blob);
       console.log(botText);
 
       chunks = [];
@@ -164,7 +159,7 @@ function chatToBottom() {
 
 
 // --------------------ロボットの投稿--------------------
-function robotOutput(content_text) {
+function robotOutput(content_text, blob) {
   // 相手の返信が終わるまで、その間は返信不可にする
   // なぜなら、自分の返信を複数受け取ったことになり、その全てに返信してきてしまうから
   // 例："Hi!〇〇!"を複数など
@@ -200,16 +195,14 @@ function robotOutput(content_text) {
     const div = document.createElement('div');
     li.appendChild(div);
     div.classList.add('chatbot-left');
-    // モールスを全角になおす（-→ー、.→・（ただし[.]を除く）、空白はなおさない）
-    const botText2byte = content_text.replace(/-/g, "ー").replace(/\.(?!])/g, "・");
-    div.innerHTML = splitSpan(botText2byte);
+    div.textContent = content_text;
     chatSubmitBtn.disabled = false;
 
     // 一番下までスクロール
     chatToBottom();
 
-    // モールス信号再生
-    playMorseCode(content_text);
+    // 回答の音声再生
+    playAudio(blob);
 
   }, 2000);
 
@@ -228,18 +221,6 @@ function robotOutput(content_text) {
 
 function goToSettings(){
   location.assign("settings");
-}
-
-// テキストを半角スペースの位置で区切って、spanタグにそれぞれ入れる
-function splitSpan(text){
-  const splitStr = text.split(" ");
-
-  var htmlContent = "";
-  for (let i = 0; i < splitStr.length; i++) {
-    // 全角スペースを付して、span要素に入れる
-    htmlContent += "<span>" + splitStr[i] + "　</span>";
-  }
-  return htmlContent;
 }
 
 

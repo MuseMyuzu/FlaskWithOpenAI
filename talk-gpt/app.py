@@ -33,6 +33,7 @@ import sys
 sys.path.append("../common/python")
 import whisper
 import text_to_speech
+import chatgpt
 import json
 import uuid
 import os
@@ -78,17 +79,17 @@ def save_wav():
     
     # 話した言葉を文字起こししてテキストに変換
     text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
-    # 日本語の場合、記号を全角のものに置き換える
-    if lang_text == "ja":
-        text = text.translate(str.maketrans({"!": "！", "?": "？", "(": "（", ")": "）"}))
     print(text)
 
-    # 
-    speech_data = text_to_speech.text_to_speech(text, lang_text)
+    # chatgptに聞く
+    answer = chatgpt.ask(text)
+
+    # chatgptの音声を作成
+    speech_data = text_to_speech.text_to_speech(answer, lang_text)
     # base64形式にして、decode("utf-8")によってStringにする
     speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
 
-    result_dict = dict(user_text=text, bot_speech=speech_data_base64)
+    result_dict = dict(user_text=text, bot_text=answer, bot_speech=speech_data_base64)
 
     os.remove(WEBM_FILE)
     # 1日以上経過したものは削除
