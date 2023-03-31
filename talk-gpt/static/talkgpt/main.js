@@ -103,7 +103,6 @@ navigator.mediaDevices.getUserMedia({
             chunk += '}';
           }
         }
-        console.log("chunk = " + chunk)
         const resJson = JSON.parse(chunk);
 
         // 送信中アニメーション削除
