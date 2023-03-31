@@ -92,48 +92,19 @@ def process_audio(queue):
             speech_data = text_to_speech.text_to_speech(answer_part, lang_text)
             # base64形式にして、decode("utf-8")によってStringにする
             speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
-            response_dict = dict(bot_text=answer_part, bot_speech=speech_data_base64)
-            response_list.append(response_dict)
-        # 録音した音声は削除
-        os.remove(WEBM_FILE)
-        # 1日以上経過したものは削除
-        remove_old_files(AUDIO_PATH)
-        queue.put(response_list)
+            print(answer_part)
+            if request.environ.get('werkzeug.server.shutdown'):
+                # 中断フラグが検出されたら、ジェネレーター関数を終了する
+                return
+            else:
+                yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
         
+    # 録音した音声は削除
+    os.remove(WEBM_FILE)
+    # 1日以上経過したものは削除
+    remove_old_files(AUDIO_PATH)
 
-
-# fetchによるリクエストを処理する
-@app.route('/save_audio', methods=['POST'])
-def save_wav():
-    audio_file = request.files["audio_data"]
-    lang_file = request.files["lang"]
-    audio_data = audio_file.read()
-    lang_text = lang_file.read().decode("utf-8")
-
-    # サブプロセスで音声処理を行う
-    queue = Queue()
-    p = Process(target=process_audio, args=(queue,))
-    print(f"p={p}")
-    p.start()
-    print("started")
-    queue.put((audio_data, lang_text))
-    print("put")
-
-    def generate():
-        print("generate")
-        while True:
-            response_list = queue.get()
-            print("get")
-            if response_list is None:
-                break
-            for response_dict in response_list:
-                yield json.dumps(response_dict) + '\n'
-
-    # サブプロセスを終了させる
-    queue.put(None)
-    p.join()
-    print("joined")
-
+    # jsonを返す
     return Response(generate(), mimetype="application/json")
 
 # ホームページ
