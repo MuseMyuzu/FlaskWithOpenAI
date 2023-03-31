@@ -160,10 +160,10 @@ def save_wav_subprocess(audio_data, lang_text, q):
     remove_old_files(AUDIO_PATH)
 
     # jsonを返す
-    #q.put(generate())
+    q.put(list(generate()))
     # 生成したJSONをputする
-    for json_data in generate():
-        q.put(json_data)
+    #for json_data in generate():
+    #    q.put(json_data)
 
 @app.route('/save_audio', methods=['POST'])
 def save_wav():
