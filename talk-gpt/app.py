@@ -39,10 +39,12 @@ import uuid
 import os
 import datetime
 import base64
-from multiprocessing import Process, Queue
+from flask_socketio import SocketIO, emit
 
 # テンプレート、staticはFlaskWithOpenAIフォルダから
 app = Flask(__name__, static_url_path="", static_folder="../", template_folder="../")
+
+abort = False
 
 # 1日以上経過したファイルを削除
 def remove_old_files(folder_path):
@@ -68,10 +70,8 @@ def abort():
 # 録音した音声データを保存する
 @app.route('/save_audio', methods=['POST'])
 def save_wav():
-    q = Queue
-    p = Process(target=generate, args=(q,))
-    p.start()
-
+    global abort
+    abort = False
     # 録音した音声を一時的に保存するファイル名
     WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
     # オーディオデータの入ったファイルのパスのみ
@@ -93,9 +93,10 @@ def save_wav():
     # chatgptに聞く
     answer = chatgpt.ask(text, lang_text)
 
-    def generate(q):
+    def generate():
+        global abort
         # 複数回に分けてデータを返す
-        q.put(json.dumps(dict(user_text=text)))
+        yield json.dumps(dict(user_text=text))
 
         for answer_part in answer:
             # chatgptの音声を作成
@@ -103,25 +104,20 @@ def save_wav():
             # base64形式にして、decode("utf-8")によってStringにする
             speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
             print(answer_part)
-            q.put(json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64)))
+            if abort:
+                abort = False
+                return
+            else:
+                yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
     
     # 録音した音声は削除
     os.remove(WEBM_FILE)
     # 1日以上経過したものは削除
     remove_old_files(AUDIO_PATH)
 
-    # ジェネレーターからデータを取得し、JSONレスポンスを作成して返す
-    def generate_response():
-        while True:
-            item = q.get()
-            if item is None:
-                break
-            elif item == "cancel":
-                p.terminate()
-                return Response(status=204)
-            yield item
     # jsonを返す
-    return Response(generate_response(), mimetype="application/json")
+    return Response(generate(), mimetype="application/json")
+    
 
 # ホームページ
 @app.route('/')
