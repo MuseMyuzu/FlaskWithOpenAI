@@ -1,8 +1,9 @@
 "use strict"
 
 let audioCtx;
-let audioSrc;
+let audioSrc = null;
 let gainNode;
+let audioBufferList = [];
 
 // 録音開始ボタンを押されたら、再生は停止する。
 const submitBtn = document.getElementById('chatbot-submit');
@@ -37,6 +38,9 @@ function playAudio(blob) {
   fileReader.onload = () => {
     const arrayBuffer = fileReader.result;
     audioCtx.decodeAudioData(arrayBuffer, (decodedData) => {
+      if(audioSrc !== null){
+        audioSrc.stop();
+      }
       audioSrc = audioCtx.createBufferSource();
       audioSrc.buffer = decodedData;
       audioSrc.connect(gainNode);
@@ -47,8 +51,6 @@ function playAudio(blob) {
   fileReader.readAsArrayBuffer(blob);
 }
 */
-
-let audioBufferList = [];
 
 function playAudio(blob) {
   if (!audioCtx) {
@@ -63,6 +65,8 @@ function playAudio(blob) {
     const arrayBuffer = fileReader.result;
     audioCtx.decodeAudioData(arrayBuffer, (decodedData) => {
       audioBufferList.push(decodedData);
+      console.log("audioBufferList = " + audioBufferList);
+      console.log("[1]audioBufferList.length = " + audioBufferList.length);
       if (audioBufferList.length === 1) {
         playBuffer();
       }
@@ -73,13 +77,18 @@ function playAudio(blob) {
 
 function playBuffer() {
   const audioSrc = audioCtx.createBufferSource();
-  const buffer = audioCtx.createBuffer(audioBufferList.length, audioBufferList[0].length, audioBufferList[0].sampleRate);
+  // const buffer = audioCtx.createBuffer(audioBufferList.length, audioBufferList[0].length, audioBufferList[0].sampleRate);
+  console.log("[2]audioBufferList.length = " + audioBufferList.length);
+  console.log("audioBufferList[0].length = " + audioBufferList[0].length);
 
+  /*
   for (let i = 0; i < audioBufferList.length; i++) {
     buffer.getChannelData(i).set(audioBufferList[i].getChannelData(0));
   }
+  */
 
-  audioSrc.buffer = buffer;
+  //audioSrc.buffer = buffer;
+  audioSrc.buffer = audioBufferList[0];
   audioSrc.connect(gainNode);
   gainNode.connect(audioCtx.destination);
   audioSrc.start();
