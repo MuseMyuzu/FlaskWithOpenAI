@@ -11,6 +11,10 @@ const chatbotBody = document.getElementById('chatbot-body');
 const chatbotFooter = document.getElementById('chatbot-footer');
 const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
 
+var robotLoadingDiv;
+var bot_li;
+
+
 // マイクアクセス要求
 navigator.mediaDevices.getUserMedia({
   audio: true
@@ -23,6 +27,10 @@ navigator.mediaDevices.getUserMedia({
   var chunks = [];
   // 録音中かどうか
   var isRecording = false;
+  // fetch中断用
+  var controller = new AbortController();
+  // fetch中かどうか
+  var fetching = false;
 
   //集音のイベントを登録する
   recorder.addEventListener('dataavailable', function (ele) {
@@ -72,8 +80,6 @@ navigator.mediaDevices.getUserMedia({
       return;
     }
 
-    // 中断用
-    const controller = new AbortController();
 
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
@@ -88,8 +94,6 @@ navigator.mediaDevices.getUserMedia({
       const reader = r.body.getReader();
 
       while (true) {
-        var robotLoadingDiv;
-        var bot_li;
         // done: 送り切ったか, value: 送られてきたデータ
         const { done, value } = await reader.read();
         if (done) {
@@ -111,7 +115,6 @@ navigator.mediaDevices.getUserMedia({
         // 送信中アニメーション削除
         userLoadingDiv.remove();
 
-        
         if("user_text" in resJson){
           // ユーザー吹き出し
           var userText = resJson.user_text;
@@ -156,7 +159,9 @@ navigator.mediaDevices.getUserMedia({
         chunks = [];
       }
     }
+    fetching = true;
     postAudio();
+    fetching = false;
   });
 
   const recSign = document.getElementById('rec');
@@ -168,6 +173,7 @@ navigator.mediaDevices.getUserMedia({
       chatSubmitSpeak.style.display = "block";
       chatSubmitSend.style.display = "none";
       recSign.style.visibility = "hidden";
+      
       isRecording = false;
     } else {
       // 録音していないときにボタンを押したら、録音開始
@@ -175,6 +181,16 @@ navigator.mediaDevices.getUserMedia({
       chatSubmitSpeak.style.display = "none";
       chatSubmitSend.style.display = "block";
       recSign.style.visibility = "visible";
+          
+      // ローディング中の吹き出しを削除
+      robotLoadingDiv?.remove();
+      bot_li?.remove();
+
+      if(fetching){
+        controller.abort();
+        console.log("abort");
+      }
+      
       isRecording = true;
     }
   });

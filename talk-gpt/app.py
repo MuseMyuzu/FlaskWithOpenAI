@@ -94,7 +94,11 @@ def save_wav():
             # base64形式にして、decode("utf-8")によってStringにする
             speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
             print(answer_part)
-            yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
+            if request.environ.get('werkzeug.server.shutdown'):
+                # 中断フラグが検出されたら、ジェネレーター関数を終了する
+                return
+            else:
+                yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
         
     # 録音した音声は削除
     os.remove(WEBM_FILE)
