@@ -189,17 +189,10 @@ navigator.mediaDevices.getUserMedia({
       if(fetching){
         controller.abort();
         console.log("abort");
-        /*
-        const abortMsg = new Blob(["abort"], {type: "text/plain"})
-        var fd = new FormData();
-        fd.append("abort_msg", abortMsg, "abort.text");
         async function postAbort(){
-          var r = await fetch("./save_audio", {
-            method: "POST",
-            body: fd
-          });
+          var r = await fetch("./abort", {method:["POST"]});
         }
-        postAbort();*/
+        postAbort();
       }
       
       isRecording = true;

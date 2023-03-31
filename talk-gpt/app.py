@@ -44,6 +44,8 @@ from flask_socketio import SocketIO, emit
 # テンプレート、staticはFlaskWithOpenAIフォルダから
 app = Flask(__name__, static_url_path="", static_folder="../", template_folder="../")
 
+abort = False
+
 # 1日以上経過したファイルを削除
 def remove_old_files(folder_path):
     now = datetime.datetime.now()
@@ -60,11 +62,16 @@ def remove_old_files(folder_path):
                 os.remove(file_path)
                 print(f"{file}を削除しました")
 
+@app.route('/abort', methods=['POST'])
+def abort():
+    global abort
+    abort = True
+
 # 録音した音声データを保存する
 @app.route('/save_audio', methods=['POST'])
 def save_wav():
-    #if request.files["abort_msg"] == "abort":
-    #    return
+    global abort
+    abort = False
     # 録音した音声を一時的に保存するファイル名
     WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
     # オーディオデータの入ったファイルのパスのみ
@@ -87,6 +94,7 @@ def save_wav():
     answer = chatgpt.ask(text, lang_text)
 
     def generate():
+        global abort
         # 複数回に分けてデータを返す
         yield json.dumps(dict(user_text=text))
 
@@ -96,7 +104,11 @@ def save_wav():
             # base64形式にして、decode("utf-8")によってStringにする
             speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
             print(answer_part)
-            yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
+            if abort:
+                abort = False
+                return
+            else:
+                yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
     
     # 録音した音声は削除
     os.remove(WEBM_FILE)
