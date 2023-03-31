@@ -10,11 +10,6 @@ const submitBtn = document.getElementById('chatbot-submit');
 submitBtn.addEventListener('click', () => {
   audioSrc?.stop();
   audioBufferList = [];
-  // ローディング中の吹き出しを削除
-  robotLoadingDiv?.remove();
-  bot_li?.remove();
-  // fetchの中断
-  controller.abort(); 
 });
 
 var volumeControl = document.getElementById('volume-range');

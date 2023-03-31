@@ -39,12 +39,9 @@ import uuid
 import os
 import datetime
 import base64
-from multiprocessing import Process, Queue
 
 # テンプレート、staticはFlaskWithOpenAIフォルダから
 app = Flask(__name__, static_url_path="", static_folder="../", template_folder="../")
-
-abort = False
 
 # 1日以上経過したファイルを削除
 def remove_old_files(folder_path):
@@ -62,42 +59,41 @@ def remove_old_files(folder_path):
                 os.remove(file_path)
                 print(f"{file}を削除しました")
 
-@app.route('/abort', methods=['POST'])
-def abort():
-    global abort
-    abort = True
+# 録音した音声データを保存する
+@app.route('/save_audio', methods=['POST'])
+def save_wav():
+    # 録音した音声を一時的に保存するファイル名
+    WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
+    # オーディオデータの入ったファイルのパスのみ
+    AUDIO_PATH = './audio/'
+    # javascriptからファイルを受け取る
+    audio_file = request.files["audio_data"]
+    lang_file = request.files["lang"]
+    # 音声データをwebm形式で保存
+    audio_data = audio_file.read()
+    with open(WEBM_FILE, "wb") as f:
+        f.write(audio_data)
+    # テキストデータを保存
+    lang_text = lang_file.read().decode("utf-8")
+    
+    # 話した言葉を文字起こししてテキストに変換
+    text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
+    print(text)
 
-# 録音した音声を一時的に保存するファイル名
-WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
-# オーディオデータの入ったファイルのパスのみ
-AUDIO_PATH = './audio/'
+    # chatgptに聞く
+    answer = chatgpt.ask(text, lang_text)
 
-# サブプロセスで音声処理を行う
-def process_audio(queue):
-    while True:
-        audio_data, lang_text = queue.get()
-        if audio_data is None:
-            break
-        # 音声データをwebm形式で保存
-        with open(WEBM_FILE, "wb") as f:
-            f.write(audio_data)
-        # 話した言葉を文字起こししてテキストに変換
-        text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
-        print(text)
-        # chatgptに聞く
-        answer = chatgpt.ask(text, lang_text)
-        response_list = []
+    def generate():
+        # 複数回に分けてデータを返す
+        yield json.dumps(dict(user_text=text))
+
         for answer_part in answer:
             # chatgptの音声を作成
             speech_data = text_to_speech.text_to_speech(answer_part, lang_text)
             # base64形式にして、decode("utf-8")によってStringにする
             speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
             print(answer_part)
-            if request.environ.get('werkzeug.server.shutdown'):
-                # 中断フラグが検出されたら、ジェネレーター関数を終了する
-                return
-            else:
-                yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
+            yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
         
     # 録音した音声は削除
     os.remove(WEBM_FILE)
