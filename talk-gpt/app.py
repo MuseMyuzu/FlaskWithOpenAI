@@ -67,116 +67,74 @@ def abort():
     global abort
     abort = True
 
-"""
-# 録音した音声データを保存する
-@app.route('/save_audio', methods=['POST'])
-def save_wav():
-    global abort
-    abort = False
-    # 録音した音声を一時的に保存するファイル名
-    WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
-    # オーディオデータの入ったファイルのパスのみ
-    AUDIO_PATH = './audio/'
-    # javascriptからファイルを受け取る
-    audio_file = request.files["audio_data"]
-    lang_file = request.files["lang"]
-    # 音声データをwebm形式で保存
-    audio_data = audio_file.read()
-    with open(WEBM_FILE, "wb") as f:
-        f.write(audio_data)
-    # テキストデータを保存
-    lang_text = lang_file.read().decode("utf-8")
-    
-    # 話した言葉を文字起こししてテキストに変換
-    text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
-    print(text)
+# 録音した音声を一時的に保存するファイル名
+WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
+# オーディオデータの入ったファイルのパスのみ
+AUDIO_PATH = './audio/'
 
-    # chatgptに聞く
-    answer = chatgpt.ask(text, lang_text)
-
-    def generate():
-        global abort
-        # 複数回に分けてデータを返す
-        yield json.dumps(dict(user_text=text))
-
+# サブプロセスで音声処理を行う
+def process_audio(queue):
+    while True:
+        audio_data, lang_text = queue.get()
+        if audio_data is None:
+            break
+        # 音声データをwebm形式で保存
+        with open(WEBM_FILE, "wb") as f:
+            f.write(audio_data)
+        # 話した言葉を文字起こししてテキストに変換
+        text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
+        print(text)
+        # chatgptに聞く
+        answer = chatgpt.ask(text, lang_text)
+        response_list = []
         for answer_part in answer:
             # chatgptの音声を作成
             speech_data = text_to_speech.text_to_speech(answer_part, lang_text)
             # base64形式にして、decode("utf-8")によってStringにする
             speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
-            print(answer_part)
-            if abort:
-                abort = False
-                abort(499)
-                return
-            else:
-                yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
-    
-    # 録音した音声は削除
-    os.remove(WEBM_FILE)
-    # 1日以上経過したものは削除
-    remove_old_files(AUDIO_PATH)
+            response_dict = dict(bot_text=answer_part, bot_speech=speech_data_base64)
+            response_list.append(response_dict)
+        # 録音した音声は削除
+        os.remove(WEBM_FILE)
+        # 1日以上経過したものは削除
+        remove_old_files(AUDIO_PATH)
+        queue.put(response_list)
+        
 
-    # jsonを返す
-    return Response(generate(), mimetype="application/json")
-"""
-def save_wav_subprocess(audio_data, lang_text, q):
-    # 録音した音声を一時的に保存するファイル名
-    WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
-    # オーディオデータの入ったファイルのパスのみ
-    AUDIO_PATH = './audio/'
-    # javascriptからファイルを受け取る
-    # audio_file = request.files["audio_data"]
-    # lang_file = request.files["lang"]
-    # 音声データをwebm形式で保存
-    # audio_data = audio_file.read()
-    with open(WEBM_FILE, "wb") as f:
-        f.write(audio_data)
-    # テキストデータを保存
-    # lang_text = lang_file.read().decode("utf-8")
-    
-    # 話した言葉を文字起こししてテキストに変換
-    text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
-    print(text)
 
-    # chatgptに聞く
-    answer = chatgpt.ask(text, lang_text)
-
-    def generate():
-        # 複数回に分けてデータを返す
-        yield json.dumps(dict(user_text=text))
-
-        for answer_part in answer:
-            # chatgptの音声を作成
-            speech_data = text_to_speech.text_to_speech(answer_part, lang_text)
-            # base64形式にして、decode("utf-8")によってStringにする
-            speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
-            print(answer_part)
-            yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
-    
-    # 録音した音声は削除
-    os.remove(WEBM_FILE)
-    # 1日以上経過したものは削除
-    remove_old_files(AUDIO_PATH)
-
-    # jsonを返す
-    q.put(list(generate()))
-    # 生成したJSONをputする
-    #for json_data in generate():
-    #    q.put(json_data)
-
+# fetchによるリクエストを処理する
 @app.route('/save_audio', methods=['POST'])
 def save_wav():
     audio_file = request.files["audio_data"]
     lang_file = request.files["lang"]
     audio_data = audio_file.read()
     lang_text = lang_file.read().decode("utf-8")
-    q = Queue()
-    p = Process(target=save_wav_subprocess, args=(audio_data, lang_text, q))
+
+    # サブプロセスで音声処理を行う
+    queue = Queue()
+    p = Process(target=process_audio, args=(queue,))
+    print(f"p={p}")
     p.start()
-    response = q.get()
+    print("started")
+    queue.put((audio_data, lang_text))
+    print("put")
+
+    def generate():
+        print("generate")
+        while True:
+            response_list = queue.get()
+            print("get")
+            if response_list is None:
+                break
+            for response_dict in response_list:
+                yield json.dumps(response_dict) + '\n'
+
+    # サブプロセスを終了させる
+    queue.put(None)
     p.join()
-    return Response(response, mimetype="application/json")
+    print("joined")
+
+    return Response(generate(), mimetype="application/json")
 
 # ホームページ
 @app.route('/')
