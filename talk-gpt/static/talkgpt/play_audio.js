@@ -9,6 +9,7 @@ let audioBufferList = [];
 const submitBtn = document.getElementById('chatbot-submit');
 submitBtn.addEventListener('click', () => {
   audioSrc?.stop();
+  audioBufferList = [];
 });
 
 var volumeControl = document.getElementById('volume-range');
@@ -76,7 +77,7 @@ function playAudio(blob) {
 }
 
 function playBuffer() {
-  const audioSrc = audioCtx.createBufferSource();
+  audioSrc = audioCtx.createBufferSource();
   // const buffer = audioCtx.createBuffer(audioBufferList.length, audioBufferList[0].length, audioBufferList[0].sampleRate);
   console.log("[2]audioBufferList.length = " + audioBufferList.length);
   console.log("audioBufferList[0].length = " + audioBufferList[0].length);
