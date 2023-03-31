@@ -10,6 +10,7 @@ const submitBtn = document.getElementById('chatbot-submit');
 submitBtn.addEventListener('click', () => {
   audioSrc?.stop();
   audioBufferList = [];
+  robotLoadingDiv?.remove();
 });
 
 var volumeControl = document.getElementById('volume-range');
@@ -26,34 +27,8 @@ volumeControl.addEventListener('input', function() {
   }
 });
 
-/*
-// Web Audio APIを使用して音声を再生
 function playAudio(blob) {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-  gainNode = audioCtx.createGain();
-  // 初期音量を設定
-  updateVolume();
-
-  const fileReader = new FileReader();
-  fileReader.onload = () => {
-    const arrayBuffer = fileReader.result;
-    audioCtx.decodeAudioData(arrayBuffer, (decodedData) => {
-      if(audioSrc !== null){
-        audioSrc.stop();
-      }
-      audioSrc = audioCtx.createBufferSource();
-      audioSrc.buffer = decodedData;
-      audioSrc.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      audioSrc.start();
-    });
-  };
-  fileReader.readAsArrayBuffer(blob);
-}
-*/
-
-function playAudio(blob) {
+  // 音声を鳴らす初期設定
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     gainNode = audioCtx.createGain();
@@ -61,13 +36,12 @@ function playAudio(blob) {
     updateVolume();
   }
 
+  // blobをarrayBufferにして再生する
   const fileReader = new FileReader();
   fileReader.onload = () => {
     const arrayBuffer = fileReader.result;
     audioCtx.decodeAudioData(arrayBuffer, (decodedData) => {
       audioBufferList.push(decodedData);
-      console.log("audioBufferList = " + audioBufferList);
-      console.log("[1]audioBufferList.length = " + audioBufferList.length);
       if (audioBufferList.length === 1) {
         playBuffer();
       }
@@ -78,17 +52,6 @@ function playAudio(blob) {
 
 function playBuffer() {
   audioSrc = audioCtx.createBufferSource();
-  // const buffer = audioCtx.createBuffer(audioBufferList.length, audioBufferList[0].length, audioBufferList[0].sampleRate);
-  console.log("[2]audioBufferList.length = " + audioBufferList.length);
-  console.log("audioBufferList[0].length = " + audioBufferList[0].length);
-
-  /*
-  for (let i = 0; i < audioBufferList.length; i++) {
-    buffer.getChannelData(i).set(audioBufferList[i].getChannelData(0));
-  }
-  */
-
-  //audioSrc.buffer = buffer;
   audioSrc.buffer = audioBufferList[0];
   audioSrc.connect(gainNode);
   gainNode.connect(audioCtx.destination);

@@ -17,19 +17,20 @@ def ask(question, lang):
         stream=True
     )
     # 返答を受け取り、逐次yield
-    response_text = "" 
     sentence = ""
     target_char = ["。", "！", "？", "\n", ".", "!", "?"]
     for chunk in response:
         if chunk:
+            # 返答のテキスト部分を抽出
             content = chunk['choices'][0]['delta'].get('content')
+            # 一文になるまでsentenceに追加
             if content:
-                response_text += content
                 sentence += content
-            if content in target_char:
-                # 一文を送る。送った後にsentenceを空にするため、別の変数へ
-                response_text = sentence
-                sentence = ""
-                yield response_text
+                # 一文の区切りが来たら、その文を返す
+                if any(word in content for word in target_char):
+                    # 一文を送る。送った後にsentenceを空にするため、別の変数へ
+                    response_text = sentence
+                    sentence = ""
+                    yield response_text
     #else:  
     #    messages += [{'role': 'assistant', 'content': response_text}]

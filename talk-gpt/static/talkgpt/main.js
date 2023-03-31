@@ -94,7 +94,7 @@ navigator.mediaDevices.getUserMedia({
         };
         // chunkには送られてきたjson（のテキスト）が入る（{"user_text": "\u30c1\u30e3..."}など）
         var chunk = new TextDecoder().decode(value);
-        // chunkが}で閉じられていなければ}を追加（なぜ閉じられない？）
+        // chunkが"}で閉じられていなければ"}を追加（なぜ閉じられない？）
         if (chunk.slice(-1) !== '}') {
           if(chunk.slice(-2) !== '"') {
             chunk += '"}';
