@@ -80,6 +80,8 @@ navigator.mediaDevices.getUserMedia({
       return;
     }
 
+    // 中断用
+    const controller = new AbortController();
 
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
@@ -88,8 +90,7 @@ navigator.mediaDevices.getUserMedia({
     async function postAudio(){
       var r = await fetch("./save_audio", {
         method: "POST",
-        body: fd,
-        signal: controller.signal
+        body: fd
       });
       const reader = r.body.getReader();
 
