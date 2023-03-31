@@ -72,6 +72,9 @@ navigator.mediaDevices.getUserMedia({
       return;
     }
 
+    // 中断用
+    const controller = new AbortController();
+
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
     fd.append("lang", langFile, "lang.text")
@@ -79,7 +82,8 @@ navigator.mediaDevices.getUserMedia({
     async function postAudio(){
       var r = await fetch("./save_audio", {
         method: "POST",
-        body: fd
+        body: fd,
+        signal: controller.signal
       });
       const reader = r.body.getReader();
 
