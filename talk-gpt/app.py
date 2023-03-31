@@ -63,6 +63,8 @@ def remove_old_files(folder_path):
 # 録音した音声データを保存する
 @app.route('/save_audio', methods=['POST'])
 def save_wav():
+    #if request.files["abort_msg"] == "abort":
+    #    return
     # 録音した音声を一時的に保存するファイル名
     WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
     # オーディオデータの入ったファイルのパスのみ
@@ -94,12 +96,8 @@ def save_wav():
             # base64形式にして、decode("utf-8")によってStringにする
             speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
             print(answer_part)
-            if request.environ.get('werkzeug.server.shutdown'):
-                # 中断フラグが検出されたら、ジェネレーター関数を終了する
-                return
-            else:
-                yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
-        
+            yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
+    
     # 録音した音声は削除
     os.remove(WEBM_FILE)
     # 1日以上経過したものは削除

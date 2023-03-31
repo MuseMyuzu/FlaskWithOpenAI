@@ -83,7 +83,7 @@ navigator.mediaDevices.getUserMedia({
 
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
-    fd.append("lang", langFile, "lang.text")
+    fd.append("lang", langFile, "lang.text");
     // フォームを送信する
     async function postAudio(){
       var r = await fetch("./save_audio", {
@@ -189,6 +189,17 @@ navigator.mediaDevices.getUserMedia({
       if(fetching){
         controller.abort();
         console.log("abort");
+        /*
+        const abortMsg = new Blob(["abort"], {type: "text/plain"})
+        var fd = new FormData();
+        fd.append("abort_msg", abortMsg, "abort.text");
+        async function postAbort(){
+          var r = await fetch("./save_audio", {
+            method: "POST",
+            body: fd
+          });
+        }
+        postAbort();*/
       }
       
       isRecording = true;
