@@ -61,7 +61,7 @@ def remove_old_files(folder_path):
 
 # 録音した音声データを保存する
 @app.route('/save_audio', methods=['POST'])
-def save_wav():
+def save_audio():
     # 録音した音声を一時的に保存するファイル名
     WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
     # オーディオデータの入ったファイルのパスのみ
@@ -80,6 +80,9 @@ def save_wav():
     text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
     print(text)
 
+    # 録音した音声は削除
+    os.remove(WEBM_FILE)
+
     # chatgptに聞く
     answer = chatgpt.ask(text, lang_text)
 
@@ -95,9 +98,8 @@ def save_wav():
             print(answer_part)
             yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
         
-    # 録音した音声は削除
-    os.remove(WEBM_FILE)
-    # 1日以上経過したものは削除
+    
+    # 1日以上経過した音声は削除
     remove_old_files(AUDIO_PATH)
 
     # jsonを返す

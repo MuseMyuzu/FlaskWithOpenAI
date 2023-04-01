@@ -63,7 +63,7 @@ def remove_old_files(folder_path):
 
 # 録音した音声データを保存する
 @app.route('/save_audio', methods=['POST'])
-def save_wav():
+def save_audio():
     # 録音した音声を一時的に保存するファイル名
     WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
     # オーディオデータの入ったファイルのパスのみ
@@ -84,6 +84,9 @@ def save_wav():
         text = text.translate(str.maketrans({"!": "！", "?": "？", "(": "（", ")": "）"}))
     print(text)
 
+    # 録音した音声は削除
+    os.remove(WEBM_FILE)
+
     # ひらがなに変換
     kks = pykakasi.kakasi()
     kana_dict = kks.convert(text)
@@ -94,8 +97,8 @@ def save_wav():
 
     result_dict = dict(user_text=text, bot_text=morse_text)
 
-    os.remove(WEBM_FILE)
-    # 1日以上経過したものは削除
+    
+    # 1日以上経過した音声は削除
     remove_old_files(AUDIO_PATH)
     
     # jsonを返す
