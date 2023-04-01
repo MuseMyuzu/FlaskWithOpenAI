@@ -20,7 +20,8 @@ navigator.mediaDevices.getUserMedia({
 }).then(function (stream) {
   // MediaRecorderオブジェクトで音声データを録音する
   var recorder = new MediaRecorder(stream, {
-    mimeType: 'audio/webm'  });
+    mimeType: 'audio/webm'
+  });
 
   // 音を拾い続けるためのチャンク
   var chunks = [];
@@ -37,10 +38,14 @@ navigator.mediaDevices.getUserMedia({
     //集音したものから音声データを作成する
     var blob = new Blob(chunks, { 'type': 'audio/webm' });
 
+    // ボタンを無効化
+    chatSubmitBtn.disabled = true;
+    console.log("true");
+
     // トグルの結果(true/false)をテキストファイルに入れておく
     var toggle = document.getElementById("lang-toggle");
     const langText = toggle.checked ? "en" : "ja"
-    const langFile = new Blob([langText], {type: "text/plain"})
+    const langFile = new Blob([langText], { type: "text/plain" })
 
     // ユーザー用吹き出し
     // ulとliを作り、右寄せのスタイルを適用し投稿する
@@ -57,7 +62,7 @@ navigator.mediaDevices.getUserMedia({
     console.log('送信中');
 
     // ファイルサイズが20MB以上の場合、送信しない
-    if(blob.size > 20 * 1024 * 1024){
+    if (blob.size > 20 * 1024 * 1024) {
       // 送信中アニメーション削除
       userLoadingDiv.remove();
 
@@ -66,6 +71,8 @@ navigator.mediaDevices.getUserMedia({
       li.appendChild(div);
       div.classList.add('chatbot-right');
       div.innerHTML = "<span id='error'>ファイルサイズが大きすぎるため、送信されません。</span>";
+
+      chatSubmitBtn.disabled = false;
 
       // 一番下までスクロール
       chatToBottom();
@@ -79,7 +86,7 @@ navigator.mediaDevices.getUserMedia({
     fd.append('audio_data', blob, "recording.wav");
     fd.append("lang", langFile, "lang.text");
     // フォームを送信する
-    async function postAudio(){
+    async function postAudio() {
       var r = await fetch("./save_audio", {
         method: "POST",
         body: fd
@@ -87,19 +94,25 @@ navigator.mediaDevices.getUserMedia({
       const reader = r.body.getReader();
 
       while (true) {
+        console.log("chatSubmitButton.disabled = " + chatSubmitBtn.disabled);
         // done: 送り切ったか, value: 送られてきたデータ
         const { done, value } = await reader.read();
         if (done) {
-          robotLoadingDiv.remove();
+          // ボットからのメッセージが終了
+          robotLoadingDiv?.remove();
+          bot_li?.remove();
+          chatSubmitBtn.disabled = false;
+          console.log("false");
+          chunks = [];
           break;
         };
         // chunkには送られてきたjson（のテキスト）が入る（{"user_text": "\u30c1\u30e3..."}など）
         var chunk = new TextDecoder().decode(value);
         // chunkが"}で閉じられていなければ"}を追加（なぜ閉じられない？）
         if (chunk.slice(-1) !== '}') {
-          if(chunk.slice(-2) !== '"') {
+          if (chunk.slice(-2) !== '"') {
             chunk += '"}';
-          }else{
+          } else {
             chunk += '}';
           }
         }
@@ -108,8 +121,8 @@ navigator.mediaDevices.getUserMedia({
         // 送信中アニメーション削除
         userLoadingDiv.remove();
 
-        
-        if("user_text" in resJson){
+
+        if ("user_text" in resJson) {
           // ユーザー吹き出し
           var userText = resJson.user_text;
           userOutput(userText, li);
@@ -126,8 +139,8 @@ navigator.mediaDevices.getUserMedia({
           bot_li.appendChild(robotLoadingDiv);
           robotLoadingDiv.classList.add("chatbot-left");
           robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
-          
-        }else if("bot_text" in resJson && "bot_speech" in resJson){
+
+        } else if ("bot_text" in resJson && "bot_speech" in resJson) {
           var botText = resJson.bot_text;
           var botSpeech = resJson.bot_speech;
 
@@ -147,10 +160,8 @@ navigator.mediaDevices.getUserMedia({
           bot_li.appendChild(robotLoadingDiv);
           robotLoadingDiv.classList.add("chatbot-left");
           robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
-          
-        }
 
-        chunks = [];
+        }
       }
     }
     postAudio();
@@ -159,7 +170,7 @@ navigator.mediaDevices.getUserMedia({
   const recSign = document.getElementById('rec');
   // --------------------自分の投稿（送信ボタンを押した時の処理）--------------------
   chatSubmitBtn.addEventListener('click', () => {
-    if(isRecording){
+    if (isRecording) {
       // 録音中にボタンを押したら、録音をやめる
       recorder.stop();
       chatSubmitSpeak.style.display = "block";
@@ -172,11 +183,11 @@ navigator.mediaDevices.getUserMedia({
       chatSubmitSpeak.style.display = "none";
       chatSubmitSend.style.display = "block";
       recSign.style.visibility = "visible";
-          
+
       // ローディング中の吹き出しを削除
       robotLoadingDiv?.remove();
       bot_li?.remove();
-      
+
       isRecording = true;
     }
   });
@@ -192,7 +203,7 @@ function chatToBottom() {
 
 // --------------------ユーザーの投稿--------------------
 // 吹き出しのliも引数に入れる（送信中のアニメーションのために吹き出しが必要）
-function userOutput(content_text, li){
+function userOutput(content_text, li) {
   // ユーザテキストが空の場合、エラー
   if (!content_text || !content_text.match(/\S/g)) return false;
 
@@ -208,11 +219,6 @@ function userOutput(content_text, li){
 
 // --------------------ロボットの投稿--------------------
 function robotOutput(content_text, botSpeech, li) {
-  // 相手の返信が終わるまで、その間は返信不可にする
-  // なぜなら、自分の返信を複数受け取ったことになり、その全てに返信してきてしまうから
-  // 例："Hi!〇〇!"を複数など
-
-  chatSubmitBtn.disabled = true;
 
   // 音声データの文字列をバイナリに変換
   let decoded_audio_data = atob(botSpeech);
@@ -227,7 +233,6 @@ function robotOutput(content_text, botSpeech, li) {
   li?.appendChild(div);
   div.classList.add('chatbot-left');
   div.textContent = content_text;
-  chatSubmitBtn.disabled = false;
 
   // 一番下までスクロール
   chatToBottom();
@@ -249,7 +254,7 @@ function robotOutput(content_text, botSpeech, li) {
   }
 }
 
-function goToSettings(){
+function goToSettings() {
   location.assign("settings");
 }
 

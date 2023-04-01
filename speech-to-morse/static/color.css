@@ -29,3 +29,12 @@
 #robot-loading-field>span {
     color: #335C80;
 }
+
+/*---------- footer ----------*/
+#volume-icon {
+    /* display: block; */
+    margin: auto;
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #335C80;
+}

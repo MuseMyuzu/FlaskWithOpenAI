@@ -4,9 +4,9 @@ import openai
 # OpenAI APIを介してGPT-3に対話する
 def ask(question, lang):
     if(lang == "ja"):
-        role_system = "日本語で回答してください。"
+        role_system = "日本語で簡潔に回答してください。"
     elif(lang == "en"):
-        role_system = "Answer in English."
+        role_system = "Answer in English in brief."
     
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",

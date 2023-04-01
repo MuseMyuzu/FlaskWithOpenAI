@@ -1,23 +1,23 @@
 #chatbot-header {
-    background: #335C80;
+    background: #33805d;
 }
 #chatbot-zoom-icon:active {
-    background: #4D7999;
+    background: #4d9970;
 }
 
 /*相手の吹き出しのデザイン*/
 .chatbot-left {
-    background: #E6F0F7;
-    color: #1A5F80;
+    background: #e6f7f1;
+    color: #1a805e;
 }
 .chatbot-left-rounded {
-    background: #E6F0F7;
-    color: #1A5F80;
+    background: #e6f7f1;
+    color: #1a805e;
 }
 
 /*自分の吹き出し*/
 .chatbot-right {
-    background: #456F99;
+    background: #45996e;
     color: #FFF;
 }
 
@@ -27,5 +27,28 @@
 
 /*---------- ロボット考え中アニメーション ----------*/
 #robot-loading-field>span {
-    color: #335C80;
+    color: #33805d;
+}
+
+/*---------- footer ----------*/
+#volume-icon {
+    color: #33805d;
+}
+input[type="range"]::-webkit-slider-thumb{
+    background: #33805d;
+}
+input[type="range"]::-moz-range-thumb{
+    background: #33805d;
+}
+input[type="range"]::-ms-thumb{
+    background: #33805d;
+}
+/*送信ボタン*/
+#chatbot-submit {
+    background: #33805d;
+    color: white;
+}
+
+#chatbot-submit:active {
+    background: #86bfae;
 }
