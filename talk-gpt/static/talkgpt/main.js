@@ -40,7 +40,6 @@ navigator.mediaDevices.getUserMedia({
 
     // ボタンを無効化
     chatSubmitBtn.disabled = true;
-    console.log("true");
 
     // トグルの結果(true/false)をテキストファイルに入れておく
     var toggle = document.getElementById("lang-toggle");
@@ -94,7 +93,6 @@ navigator.mediaDevices.getUserMedia({
       const reader = r.body.getReader();
 
       while (true) {
-        console.log("chatSubmitButton.disabled = " + chatSubmitBtn.disabled);
         // done: 送り切ったか, value: 送られてきたデータ
         const { done, value } = await reader.read();
         if (done) {
@@ -102,27 +100,23 @@ navigator.mediaDevices.getUserMedia({
           robotLoadingDiv?.remove();
           bot_li?.remove();
           chatSubmitBtn.disabled = false;
-          console.log("false");
           chunks = [];
           break;
         };
-        // chunkには送られてきたjson（のテキスト）が入る（{"user_text": "\u30c1\u30e3..."}など）
-        var chunk = new TextDecoder().decode(value);
-        // chunkが"}で閉じられていなければ"}を追加（なぜ閉じられない？）
-        /*
-        if (chunk.slice(-1) !== '}') {
-          if (chunk.slice(-2) !== '"') {
-            chunk += '"}';
-          } else {
-            chunk += '}';
-          }
-        }
-        */
-        const resJson = JSON.parse(chunk);
 
+        // 受信データをJSONに変換
+        var resJson;
+        try{
+          // chunkには送られてきたjson（のテキスト）が入る（{"user_text": "\u30c1\u30e3..."}など）
+          var chunk = new TextDecoder().decode(value);
+          resJson = JSON.parse(chunk);
+        } catch(e){
+          resJson = null;
+          console.error(e);
+        }
+        
         // 送信中アニメーション削除
         userLoadingDiv.remove();
-
 
         if ("user_text" in resJson) {
           // ユーザー吹き出し
