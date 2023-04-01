@@ -52,3 +52,6 @@ input[type="range"]::-ms-thumb{
 #chatbot-submit:active {
     background: #86bfae;
 }
+#chatbot-submit:disabled{
+    background: #aaa;
+}
