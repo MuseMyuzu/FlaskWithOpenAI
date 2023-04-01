@@ -1,9 +1,7 @@
 "use strict"
 
 function backToHome() {
-    // モールスの速さ（duration）を取得
-    const durRangeDiv = document.getElementById("dur-range");
-    const durRangeValue = durRangeDiv.value;
+    // 設定で受け取った値をURLにわたす
     
-    location.assign("./?dur=" + durRangeValue);
+    location.assign("./");
 }

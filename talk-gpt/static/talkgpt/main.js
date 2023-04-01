@@ -159,9 +159,6 @@ navigator.mediaDevices.getUserMedia({
           userLoadingDiv.remove();
           console.error(e);
         }
-        
-
-        
       }
     }
     postAudio();

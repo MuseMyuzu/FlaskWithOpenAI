@@ -32,9 +32,23 @@
 
 /*---------- footer ----------*/
 #volume-icon {
-    /* display: block; */
-    margin: auto;
-    margin-left: 0px;
-    margin-right: 0px;
     color: #335C80;
+}
+input[type="range"]::-webkit-slider-thumb{
+    background: #335C80;
+}
+input[type="range"]::-moz-range-thumb{
+    background: #335C80;
+}
+input[type="range"]::-ms-thumb{
+    background: #335C80;
+}
+/*送信ボタン*/
+#chatbot-submit {
+    background: #335C80;
+    color: white;
+}
+
+#chatbot-submit:active {
+    background: #86ABBF;
 }

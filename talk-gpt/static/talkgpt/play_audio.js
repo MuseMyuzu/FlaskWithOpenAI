@@ -12,6 +12,7 @@ submitBtn.addEventListener('click', () => {
   audioBufferList = [];
 });
 
+// 音量バーと音量のリンク
 var volumeControl = document.getElementById('volume-range');
 const volumeIcon = document.getElementById("volume-icon");
 volumeControl.addEventListener('input', function() {
@@ -26,6 +27,7 @@ volumeControl.addEventListener('input', function() {
   }
 });
 
+// ストリーミングで手に入るblobの音を鳴らす
 function playAudio(blob) {
   // 音声を鳴らす初期設定
   if (!audioCtx) {
@@ -49,6 +51,7 @@ function playAudio(blob) {
   fileReader.readAsArrayBuffer(blob);
 }
 
+//audioBufferListの音を順にならす
 function playBuffer() {
   audioSrc = audioCtx.createBufferSource();
   audioSrc.buffer = audioBufferList[0];
@@ -64,8 +67,9 @@ function playBuffer() {
   };
 }
 
+// 音量バーの音量を反映
 function updateVolume(){
-  // gainNodeがnullなどでないとき、音量バーの数値を、sin波の音量に反映
+  // gainNodeがnullなどでないとき、音量バーの数値を、音量に反映
   if(gainNode){
     gainNode.gain.value = volumeControl.value;
   }
