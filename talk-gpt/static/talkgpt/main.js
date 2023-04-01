@@ -110,54 +110,58 @@ navigator.mediaDevices.getUserMedia({
           // chunkには送られてきたjson（のテキスト）が入る（{"user_text": "\u30c1\u30e3..."}など）
           var chunk = new TextDecoder().decode(value);
           resJson = JSON.parse(chunk);
+
+          // 送信中アニメーション削除
+          userLoadingDiv.remove();
+
+          if ("user_text" in resJson) {
+            // ユーザー吹き出し
+            var userText = resJson.user_text;
+            userOutput(userText, li);
+  
+            // 一番下までスクロール
+            chatToBottom();
+  
+            // ロボットの考え中アニメーション作成
+            const ul = document.getElementById('chatbot-ul');
+            bot_li = document.createElement('li');
+            bot_li.classList.add("left");
+            ul.appendChild(bot_li);
+            robotLoadingDiv = document.createElement('div');
+            bot_li.appendChild(robotLoadingDiv);
+            robotLoadingDiv.classList.add("chatbot-left");
+            robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
+  
+          } else if ("bot_text" in resJson && "bot_speech" in resJson) {
+            var botText = resJson.bot_text;
+            var botSpeech = resJson.bot_speech;
+  
+            // 考え中アニメーション削除
+            robotLoadingDiv.remove();
+  
+            // ボット吹き出し
+            robotOutput(botText, botSpeech, bot_li);
+            console.log(botText);
+  
+            // ロボットの考え中アニメーション作成
+            const ul = document.getElementById('chatbot-ul');
+            bot_li = document.createElement('li');
+            bot_li.classList.add("left");
+            ul.appendChild(bot_li);
+            robotLoadingDiv = document.createElement('div');
+            bot_li.appendChild(robotLoadingDiv);
+            robotLoadingDiv.classList.add("chatbot-left");
+            robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
+  
+          }
         } catch(e){
-          resJson = null;
+          // 送信中アニメーション削除
+          userLoadingDiv.remove();
           console.error(e);
         }
         
-        // 送信中アニメーション削除
-        userLoadingDiv.remove();
 
-        if ("user_text" in resJson) {
-          // ユーザー吹き出し
-          var userText = resJson.user_text;
-          userOutput(userText, li);
-
-          // 一番下までスクロール
-          chatToBottom();
-
-          // ロボットの考え中アニメーション作成
-          const ul = document.getElementById('chatbot-ul');
-          bot_li = document.createElement('li');
-          bot_li.classList.add("left");
-          ul.appendChild(bot_li);
-          robotLoadingDiv = document.createElement('div');
-          bot_li.appendChild(robotLoadingDiv);
-          robotLoadingDiv.classList.add("chatbot-left");
-          robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
-
-        } else if ("bot_text" in resJson && "bot_speech" in resJson) {
-          var botText = resJson.bot_text;
-          var botSpeech = resJson.bot_speech;
-
-          // 考え中アニメーション削除
-          robotLoadingDiv.remove();
-
-          // ボット吹き出し
-          robotOutput(botText, botSpeech, bot_li);
-          console.log(botText);
-
-          // ロボットの考え中アニメーション作成
-          const ul = document.getElementById('chatbot-ul');
-          bot_li = document.createElement('li');
-          bot_li.classList.add("left");
-          ul.appendChild(bot_li);
-          robotLoadingDiv = document.createElement('div');
-          bot_li.appendChild(robotLoadingDiv);
-          robotLoadingDiv.classList.add("chatbot-left");
-          robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
-
-        }
+        
       }
     }
     postAudio();
