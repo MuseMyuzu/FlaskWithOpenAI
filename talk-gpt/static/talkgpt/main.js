@@ -81,6 +81,7 @@ navigator.mediaDevices.getUserMedia({
       return;
     }
 
+    // 受信データを格納する
     var buffer = "";
 
     var fd = new FormData();
@@ -111,16 +112,16 @@ navigator.mediaDevices.getUserMedia({
         try{
           // chunkには送られてきたjson（のテキスト）が入る（{"user_text": "\u30c1\u30e3..."}など）
           var chunk = new TextDecoder().decode(value);
-          console.log("chunk = " + chunk);
 
+          // chunkをbufferに追加していき、{}で囲まれたところができたらresultに追加
           buffer += chunk;
           const regex = /\{[^}]+\}/g; // 中かっこ内の文字列を抽出する正規表現
           const result = buffer.match(regex); // 抽出結果を格納する配列
 
+          // {}で囲まれた部分は削除
           buffer = buffer.replace(regex, "");
 
-          console.log("result = " + result);
-
+          // {}で囲まれた要素がなければ戻る。あればjsonに変換
           if(result == null) continue;
 
           result.forEach(element => {
