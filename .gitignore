@@ -159,3 +159,4 @@ cython_debug/
 app/recording.webm
 
 google_code.html
+secret-key.json
