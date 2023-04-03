@@ -7,14 +7,6 @@ const chatbotBody = document.getElementById('chatbot-body');
 const chatbotFooter = document.getElementById('chatbot-footer');
 const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
 
-function backToHome() {
-    // モールスの速さ（duration）を取得
-    const durRangeDiv = document.getElementById("dur-range");
-    const durRangeValue = durRangeDiv.value;
-    
-    location.assign("./?dur=" + durRangeValue);
-}
-
 function switchToEnglish(){
     location.assign("./settings-en");
 }

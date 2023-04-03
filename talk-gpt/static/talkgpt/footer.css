@@ -1,0 +1,192 @@
+#chatbot-footer {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    box-sizing: border-box;
+    background: #FFF;
+    border-top: 1.5px solid #EEE;
+}
+
+@media screen and (min-width: 700px) {
+
+    /*PC*/
+    #chatbot-footer.chatbot-footer-zoom {
+        margin-bottom: 0;
+    }
+}
+
+@media screen and (max-width: 700px) {
+
+    /*スマホ*/
+    #chatbot-footer.chatbot-footer-zoom {
+        position: fixed;
+        margin-bottom: 60px;
+    }
+}
+
+/* トグルボタン */
+.toggle-button-004 {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 75px;
+    height: 37.5px;
+    margin: auto;
+    margin-left: 15px;
+    margin-right: 25px;
+    border-radius: 50px;
+    box-sizing: content-box;
+    background-color: #cb494933;
+    cursor: pointer;
+    transition: background-color .4s;
+}
+.toggle-button-004:has(:checked) {
+    background-color: #456F9933;
+}
+.toggle-button-004::before {
+    position: absolute;
+    left: 5px;
+    width: 31.5px;
+    height: 31.5px;
+    border-radius: 50%;
+    background-color: #cb4949;
+    content: '';
+    transition: left .4s;
+}
+
+.toggle-button-004:has(:checked)::before {
+    left: 37.5px;
+    background-color: #456F99;
+}
+
+.toggle-button-004::after {
+    position: absolute;
+    left: 20.5px;
+    transform: translateX(-50%);
+    color: #fff;
+    font-weight: 600;
+    font-size: .9em;
+    content: 'Ja';
+    transition: left .4s;
+}
+
+.toggle-button-004:has(:checked)::after {
+    left: 53.25px;
+    content: 'En';
+}
+
+.toggle-button-004 input {
+    display: none;
+}
+
+/* 音量アイコン */
+#volume-icon {
+    /* display: block; */
+    margin: auto;
+    margin-left: 0px;
+    margin-right: 0px;
+    color: #335C80;
+}
+/* 音量スライダー */
+.range {
+    position: relative;
+    margin: auto;
+    margin-left: 5px;
+}
+input[type="range"]{
+    cursor: pointer;
+    position: relative;
+    appearance: none;
+    background: #00000000;
+    height: 5px;
+    width: 80px;
+    top: -2px;
+}
+input[type="range"]::-webkit-slider-thumb{
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+    appearance: none;
+    background: #335C80;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+input[type="range"]::-moz-range-thumb{
+    cursor: pointer;
+    appearance: none;
+    background: #335C80;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+input[type="range"]::-ms-thumb{
+    cursor: pointer;
+    appearance: none;
+    background: #335C80;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+#range-bar{
+    position: absolute;
+    z-index: 0;
+    width: 0;
+    height: 0;
+    top: 7px;
+    /* 三角形 */
+    border-style: solid;
+    border-width: 6px 70px 6px 0;
+    border-color: transparent #ccc transparent transparent;
+}
+
+
+/*録音中のボタン*/
+#rec {
+    /*波紋の基点とするためrelativeを指定*/
+    position: relative;
+    /*波紋の形状*/
+    display: inline-block;
+    background: #d04141;
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    margin-right: 0px;
+    border-radius: 50%;
+    color: #ea6262;
+    outline: none;
+    /* 最初は非表示 */
+    visibility: hidden;
+}
+
+/*送信ボタン*/
+#chatbot-submit {
+    cursor: pointer;
+    height: 35px;
+    width: 20%;
+    margin: auto;
+    margin-right: 15px;
+    margin-left: 15px;
+    font-size: 16px;
+    background: #335C80;
+    color: white;
+    /*デフォルトのボーダーを消す*/
+    border: none;
+    box-sizing: border-box;
+    border-radius: 7px;
+}
+
+#chatbot-submit:active {
+    outline: 0;
+    background: #86ABBF;
+}
+
+#chatbot-submit-speak{
+    display: block; /* 最初は表示 */
+    color: #FFF;
+}
+
+#chatbot-submit-send{
+    display: none; /* 最初は非表示 */
+    color: #FFF;
+}

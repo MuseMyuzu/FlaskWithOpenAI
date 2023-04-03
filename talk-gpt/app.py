@@ -28,19 +28,17 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# pykakasi
-# Copyright 2014 miurahr
-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, Response
 import sys
 sys.path.append("../common/python")
 import whisper
-import morse
+import text_to_speech
+import chatgpt
 import json
-import pykakasi
 import uuid
 import os
 import datetime
+import base64
 
 # テンプレート、staticはFlaskWithOpenAIフォルダから
 app = Flask(__name__, static_url_path="", static_folder="../", template_folder="../")
@@ -78,46 +76,48 @@ def save_audio():
     # テキストデータを保存
     lang_text = lang_file.read().decode("utf-8")
     
+    # 話した言葉を文字起こししてテキストに変換
     text = whisper.speechfile_to_text(WEBM_FILE, lang_text)
-    # 日本語の場合、記号を全角のものに置き換える
-    if lang_text == "ja":
-        text = text.translate(str.maketrans({"!": "！", "?": "？", "(": "（", ")": "）"}))
     print(text)
 
     # 録音した音声は削除
     os.remove(WEBM_FILE)
 
-    # ひらがなに変換
-    kks = pykakasi.kakasi()
-    kana_dict = kks.convert(text)
-    kana_text = ''.join([item['hira'] for item in kana_dict])
-    
-    morse_text = morse.convert_to_morse_code(kana_text)
-    print(morse_text)
+    # chatgptに聞く
+    answer = chatgpt.ask(text, lang_text)
 
-    result_dict = dict(user_text=text, bot_text=morse_text)
+    def generate():
+        # 複数回に分けてデータを返す
+        yield json.dumps(dict(user_text=text))
 
+        for answer_part in answer:
+            # chatgptの音声を作成
+            speech_data = text_to_speech.text_to_speech(answer_part, lang_text)
+            # base64形式にして、decode("utf-8")によってStringにする
+            speech_data_base64 = base64.b64encode(speech_data).decode("utf-8")
+            print(answer_part)
+            yield json.dumps(dict(bot_text=answer_part, bot_speech=speech_data_base64))
+        
     
     # 1日以上経過した音声は削除
     remove_old_files(AUDIO_PATH)
-    
+
     # jsonを返す
-    return json.dumps(result_dict)
-    
+    return Response(generate(), mimetype="application/json")
 
 # ホームページ
 @app.route('/')
 def home():
     duration = request.args.get("dur", "")
-    return render_template('./speech-to-morse/templates/index.html', dur=duration)
+    return render_template('./talk-gpt/templates/index.html', dur=duration)
 
 # 設定・リンク等
 @app.route("/settings")
-def settings_morse_ja():
-    return render_template("./speech-to-morse/templates/morse/settings_morse_ja.html")
+def settings_ja():
+    return render_template("./talk-gpt/templates/settings/settings_ja.html")
 @app.route("/settings-en")
-def settings_morse_en():
-    return render_template("./speech-to-morse/templates/morse/settings_morse_en.html")
+def settings_en():
+    return render_template("./talk-gpt/templates/settings/settings_en.html")
 
 # サーバ起動
 if __name__ == '__main__':

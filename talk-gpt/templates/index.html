@@ -12,17 +12,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {% extends './common/templates/base.html' %}
 
 {% block head %}
-<meta name="description" content="話し声を録音しモールス信号に変換します。電信の音（トンツー）も鳴ります。OpenAIのWhisperAPIという文字起こしサービスを利用しました。">
-<title>モールス変換 - Morse Converter</title>
+<meta name="description" content="ChatGPTと音声で会話できるアプリ「TalkGPT」。
+SiriやAlexa、Googleアシスタントのように、声を聴いて文字起こしし、音声で返答してくれます。
+OpenAIのChatGPT API・Whisper APIやGoogleのText-to-Speech APIを使用しています。
+英語と日本語に対応。">
+<title>TalkGPT</title>
 <!-- Google マテリアル使用（全画面ボタンなど））-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./common/static/style.css" type="text/css">
-<link rel="stylesheet" href="./speech-to-morse/static/morse/footer.css" type="text/css">
+<link rel="stylesheet" href="./talk-gpt/static/talkgpt/footer.css" type="text/css">
 <link rel="stylesheet" href="./common/static/menu/hamburger_menu.css" type="text/css">
-<link rel="stylesheet" href="./speech-to-morse/static/color.css" type="text/css">
+<link rel="stylesheet" href="./talk-gpt/static/color.css" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -30,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     <div id="chatbot-header">
         <i id="menu-icon" class="material-icons" onclick="toggleMenu()">menu</i>
-        <div id="chatbot-logo">モールス変換</div>
+        <div id="chatbot-logo">TalkGPT</div>
         <i id="settings-icon" class="material-icons" onclick="goToSettings()">settings</i>
         <i id="chatbot-zoom-icon" class="material-icons waves-effect waves-light" onclick="chatbotZoom()">fullscreen</i>
     </div>
@@ -52,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             <i id="volume-icon" class="material-icons">volume_up</i>
             <div class="range">
                 <div id="range-bar"></div>
-                <input type="range" min="0" max="0.1" step="0.001" value="0.05" id="volume-range">
+                <input type="range" min="0" max="1" step="0.01" value="0.5" id="volume-range">
             </div>
             <!-- 送信ボタン -->
             <div id="rec"></div>
@@ -74,7 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="./speech-to-morse/static/morse/playMorse.js"></script>
-<script src="./speech-to-morse/static/morse/record.js"></script>
+<script src="./talk-gpt/static/talkgpt/play_audio.js"></script>
+<script src="./talk-gpt/static/talkgpt/main.js"></script>
 <script src="./common/static/menu/hamburger_menu.js"></script>
 {% endblock %}

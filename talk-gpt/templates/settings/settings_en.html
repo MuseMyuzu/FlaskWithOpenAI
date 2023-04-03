@@ -1,28 +1,17 @@
 {% extends './common/templates/settings_en.html' %}
 
 {% block app_explanation %}
-<h2>Settings</h2>
-<h3>Morse Speed</h3>
-<div class="range">
-    <!-- モールスの速さを5段階で設定する。初期値は3 -->
-    <input type="range" min="1" max="5" step="1" value="3" id="dur-range">
-</div>
-
 <h2>How To Use</h2>
 <h3>Speaking</h3>
 <p>Pressing <i class="material-icons" style="color: #333">record_voice_over</i> 
     starts recording, 
     and pressing <i class="material-icons" style="color: #333">send</i>
      stops recording and sends your voice to the server.</p>
-<h4>Morse Code</h4>
-    <ul>
-        <li>"・" is dot, and "ー" is dash.</li>
-        <li>Characters that cannot be converted to Morse Code are enclosed in [].</li>
-    </ul>
+<p>Note: Recording cannot begin until ChatGPT has finished all replies (when the button is gray).</p>
 
 <h3>Language</h3>
 <p>The selection bar in the lower left corner allows you to choose the language you speak.
-     Select "Ja" to speak Japanese or "En" to speak English.</p>
+ The bot will answer "Ja" in Japanese and "En" in English.</p>
 
 <h3>Volume</h3>
 <p>The volume can be adjusted with <i class="material-icons" style="color: #333">volume_up</i>. 
@@ -43,5 +32,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="./speech-to-morse/static/settings/settings_morse.js"></script>
+<script src="./talk-gpt/static/settings/settings_talkgpt.js"></script>
 {% endblock %}
