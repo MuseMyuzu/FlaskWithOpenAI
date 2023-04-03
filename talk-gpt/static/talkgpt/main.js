@@ -81,6 +81,8 @@ navigator.mediaDevices.getUserMedia({
       return;
     }
 
+    var buffer = "";
+
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
     fd.append("lang", langFile, "lang.text");
@@ -110,18 +112,19 @@ navigator.mediaDevices.getUserMedia({
           // chunkには送られてきたjson（のテキスト）が入る（{"user_text": "\u30c1\u30e3..."}など）
           var chunk = new TextDecoder().decode(value);
           console.log("chunk = " + chunk);
-          const regex = /{([^}]+)}/g; // 中かっこ内の文字列を抽出する正規表現
-          const result = []; // 抽出結果を格納する配列
 
-          let match;
-          while ((match = regex.exec(chunk)) !== null) {
-            result.push(match[1]); // 中かっこ内の文字列を配列に追加する
-          }
+          buffer += chunk;
+          const regex = /\{[^}]+\}/g; // 中かっこ内の文字列を抽出する正規表現
+          const result = buffer.match(regex); // 抽出結果を格納する配列
+
+          buffer = buffer.replace(regex, "");
 
           console.log("result = " + result);
 
+          if(result == null) continue;
+
           result.forEach(element => {
-            resJson = JSON.parse("{" + element + "}");
+            resJson = JSON.parse(element);
 
             // 送信中アニメーション削除
             userLoadingDiv.remove();
