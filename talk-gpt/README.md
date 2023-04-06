@@ -1,6 +1,9 @@
 # TalkGPT
  音声でChatGPTと会話します。
  
+ ▽ デモサイト  
+ https://musemyuzu.com/flask/talk-gpt/
+ 
 ## 紹介動画
  
  
