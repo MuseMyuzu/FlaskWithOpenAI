@@ -260,12 +260,11 @@ function robotOutput(content_text, botSpeech, li) {
   div.classList.add('chatbot-left');
   div.textContent = content_text;
 
-  // 一番下までスクロール
-  chatToBottom();
-
   // 回答の音声再生
   playAudio(blob);
 
+  // 一番下までスクロール
+  chatToBottom();
 
   if (chatbotZoomState === 'large' && window.matchMedia('(min-width:700px)').matches) {
     document.querySelectorAll('.chatbot-left').forEach((cl) => {

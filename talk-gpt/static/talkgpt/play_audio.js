@@ -4,12 +4,16 @@ let audioCtx;
 let audioSrc = null;
 let gainNode;
 let audioBufferList = [];
+let blobList = [];
+let isReading = false;
 
 // 録音開始ボタンを押されたら、再生は停止する。
 const submitBtn = document.getElementById('chatbot-submit');
 submitBtn.addEventListener('click', () => {
   audioSrc?.stop();
   audioBufferList = [];
+  blobList = [];
+  isReading = false;
 });
 
 // 音量バーと音量のリンク
@@ -27,17 +31,17 @@ volumeControl.addEventListener('input', function() {
   }
 });
 
-// ストリーミングで手に入るblobの音を鳴らす
 function playAudio(blob) {
-  // 音声を鳴らす初期設定
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     gainNode = audioCtx.createGain();
-    // 初期音量を設定
     updateVolume();
   }
-
-  // blobをarrayBufferにして再生する
+  if (isReading) {
+    blobList.push(blob); // blobをリストに追加
+    return;
+  }
+  isReading = true;
   const fileReader = new FileReader();
   fileReader.onload = () => {
     const arrayBuffer = fileReader.result;
@@ -46,10 +50,15 @@ function playAudio(blob) {
       if (audioBufferList.length === 1) {
         playBuffer();
       }
+      isReading = false;
+      if (blobList.length > 0) {
+        playAudio(blobList.shift()); // リストに追加されたblobを順番に再生
+      }
     });
   };
   fileReader.readAsArrayBuffer(blob);
 }
+
 
 //audioBufferListの音を順にならす
 function playBuffer() {
