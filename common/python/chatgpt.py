@@ -1,4 +1,10 @@
 import openai
+import os
+from dotenv import load_dotenv
+
+# APIキー
+load_dotenv()
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 prev_q = ""
 prev_a = ""
