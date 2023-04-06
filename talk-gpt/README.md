@@ -5,6 +5,7 @@
  https://musemyuzu.com/flask/talk-gpt/
  
 ## 紹介動画
+ https://youtu.be/mV9uEMDbJUc
  
  
 # ローカルでの実行
@@ -33,8 +34,9 @@
  ``` OPENAI_API_KEY = "あなたのAPIキー" ```
  を入力します。
 
-## audioフォルダの作成
- talk-gptフォルダ内に audio フォルダを作ってください
+## 必要ファイル・フォルダの作成
+ * talk-gptフォルダ内に audio フォルダを作ってください
+ * common>templatesフォルダ内に google_code.html を作ってください（広告コードやGtagを設置しない場合は何も書かなくてOK）
  
 ## 実行
  1. 仮想環境を立ち上げます。
