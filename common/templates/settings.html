@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <link href= "https://fonts.googleapis.com/icon?family=Material+Icons" rel= "stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./common/static/style.css" type="text/css">
+<link rel="stylesheet" href="./common/static/ads/ads_style.css" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -66,9 +67,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         </div>
     </div>
 
-    <div id= "chatbot-footer">
-
+    <div id="ads-wrapper">
+        {% include "./common/templates/ads/footer_ads.html" %}
     </div>
+
+    <div id="chatbot-footer"></div>
 
 </div>
 <link rel="stylesheet" href="./common/static/settings/settings.css" type="text/css">

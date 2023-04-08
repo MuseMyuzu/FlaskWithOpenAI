@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <link rel="stylesheet" href="./speech-to-morse/static/morse/footer.css" type="text/css">
 <link rel="stylesheet" href="./common/static/menu/hamburger_menu.css" type="text/css">
 <link rel="stylesheet" href="./speech-to-morse/static/color.css" type="text/css">
+<link rel="stylesheet" href="./common/static/ads/ads_style.css" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -39,6 +40,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     <div id="chatbot-body">
         <ul id="chatbot-ul"></ul>
+        
+    </div>
+    
+    <div id="ads-wrapper">
+        {% include "./common/templates/ads/footer_ads.html" %}
     </div>
 
     <!--フッター-->

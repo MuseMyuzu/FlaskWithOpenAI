@@ -26,6 +26,7 @@ OpenAIのChatGPT API・Whisper APIやGoogleのText-to-Speech APIを使用して�
 <link rel="stylesheet" href="./talk-gpt/static/talkgpt/footer.css" type="text/css">
 <link rel="stylesheet" href="./common/static/menu/hamburger_menu.css" type="text/css">
 <link rel="stylesheet" href="./talk-gpt/static/color.css" type="text/css">
+<link rel="stylesheet" href="./common/static/ads/ads_style.css" type="text/css">
 {% endblock %}
 
 {% block body %}
@@ -42,6 +43,10 @@ OpenAIのChatGPT API・Whisper APIやGoogleのText-to-Speech APIを使用して�
 
     <div id="chatbot-body">
         <ul id="chatbot-ul"></ul>
+    </div>
+
+    <div id="ads-wrapper">
+        {% include "./common/templates/ads/footer_ads.html" %}
     </div>
 
     <!--フッター-->

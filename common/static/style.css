@@ -144,7 +144,7 @@ a {
 /*チャットのフィールド*/
 #chatbot-body {
     width: 100%;
-    height: calc(80vh - 110px);
+    height: calc(80vh - 110px - 60px);
     padding-top: 10px;
     background: #FFF;
     box-sizing: border-box;
@@ -161,7 +161,7 @@ a {
 
     /*スマホ*/
     #chatbot-body {
-        height: calc(100vh - 170px);
+        height: calc(100vh - 170px - 60px);
     }
 }
 
@@ -170,7 +170,7 @@ a {
 }
 
 #chatbot-body.chatbot-body-zoom {
-    height: calc(100vh - 170px);
+    height: calc(100vh - 170px - 60px);
 }
 
 /*Chrome、Safariでスクロールバーを非表示にする*/
