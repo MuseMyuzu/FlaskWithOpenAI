@@ -3,10 +3,14 @@
 {% block app_explanation %}
 <h2>設定</h2>
 <h3>モールススピード</h3>
-<div class="range">
+
+<div class="range" id="dur-range">
     <!-- モールスの速さを5段階で設定する。初期値は3 -->
-    <input type="range" min="1" max="5" step="1" value="3" id="dur-range">
+    <span>速い</span>
+    <input type="range" min="1" max="5" step="1" value="3">
+    <span>遅い</span>
 </div>
+
 
 <h2>遊び方</h2>
 <h3>話す</h3>
@@ -39,5 +43,6 @@
 {% endblock %}
 
 {% block scripts %}
+<link rel="stylesheet" href="./speech-to-morse/static/settings/settings_morse.css" type="text/css">
 <script src="./speech-to-morse/static/settings/settings_morse.js"></script>
 {% endblock %}
