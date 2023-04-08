@@ -92,6 +92,9 @@ navigator.mediaDevices.getUserMedia({
       return;
     }
 
+    // 一番下までスクロール
+    chatToBottom();
+
     // 受信データを格納する
     var buffer = "";
 
@@ -159,6 +162,9 @@ navigator.mediaDevices.getUserMedia({
               robotLoadingDiv.classList.add("chatbot-left");
               robotLoadingDiv.innerHTML = '<div id= "robot-loading-field"><span id= "robot-loading-circle1" class="material-icons">circle</span> <span id= "robot-loading-circle2" class="material-icons">circle</span> <span id= "robot-loading-circle3" class="material-icons">circle</span>';
     
+              // 一番下までスクロール
+              chatToBottom();
+
             } else if ("bot_text" in resJson && "bot_speech" in resJson) {
               var botText = resJson.bot_text;
               var botSpeech = resJson.bot_speech;
@@ -168,7 +174,6 @@ navigator.mediaDevices.getUserMedia({
     
               // ボット吹き出し
               robotOutput(botText, botSpeech, bot_li);
-              console.log(botText);
     
               // ロボットの考え中アニメーション作成
               const ul = document.getElementById('chatbot-ul');
@@ -262,9 +267,6 @@ function robotOutput(content_text, botSpeech, li) {
 
   // 回答の音声再生
   playAudio(blob);
-
-  // 一番下までスクロール
-  chatToBottom();
 
   if (chatbotZoomState === 'large' && window.matchMedia('(min-width:700px)').matches) {
     document.querySelectorAll('.chatbot-left').forEach((cl) => {

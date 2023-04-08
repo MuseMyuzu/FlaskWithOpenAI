@@ -83,6 +83,9 @@ navigator.mediaDevices.getUserMedia({
       return;
     }
 
+    // 一番下までスクロール
+    chatToBottom();
+    
     var fd = new FormData();
     fd.append('audio_data', blob, "recording.wav");
     fd.append("lang", langFile, "lang.text")
