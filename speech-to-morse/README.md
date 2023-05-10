@@ -9,7 +9,7 @@
  
 # ローカルでの実行
  Git clone または、右上の「Code」から「Download ZIP」でファイルをダウンロード・解凍します。  
- 最低限、commonフォルダとtalk-gptフォルダがあれば動作します。
+ 最低限、commonフォルダとspeech-to-morseフォルダがあれば動作します。
  
 ## 開発環境の作成
  Python3をインストールします。Anacondaを使っても構いません。
