@@ -25,13 +25,27 @@ const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
 var robotLoadingDiv;
 var bot_li;
 
+var mimeType;
+if(MediaRecorder.isTypeSupported("audio/webm")){
+  mimeType = "audio/webm"
+}
+else if(MediaRecorder.isTypeSupported("video/mp4")){
+  mimeType = "video/mp4"
+}
+else if(MediaRecorder.isTypeSupported("video/webm")){
+  mimeType = "video/webm"
+}
+else{
+  console.error("no suitable mimetype found for this device.");
+}
+
 // マイクアクセス要求
 navigator.mediaDevices.getUserMedia({
   audio: true
 }).then(function (stream) {
   // MediaRecorderオブジェクトで音声データを録音する
   var recorder = new MediaRecorder(stream, {
-    mimeType: 'audio/webm'
+    mimeType: mimeType
   });
 
   // 音を拾い続けるためのチャンク
@@ -47,7 +61,7 @@ navigator.mediaDevices.getUserMedia({
   // recorder.stopが実行された時のイベント
   recorder.addEventListener('stop', function (event) {
     //集音したものから音声データを作成する
-    var blob = new Blob(chunks, { 'type': 'audio/webm' });
+    var blob = new Blob(chunks, { 'type': mimeType });
 
     // ボタンを無効化
     chatSubmitBtn.disabled = true;
@@ -257,7 +271,7 @@ function robotOutput(content_text, botSpeech, li) {
   for (let i = 0; i < decoded_audio_data.length; i++) {
     audio_data[i] = decoded_audio_data.charCodeAt(i);
   }
-  let blob = new Blob([audio_data.buffer], { type: 'audio/mp3' });
+  let blob = new Blob([audio_data.buffer], { type: mimeType });
 
   // このdivにテキストを指定
   const div = document.createElement('div');

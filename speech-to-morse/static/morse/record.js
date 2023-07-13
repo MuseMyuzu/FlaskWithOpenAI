@@ -22,13 +22,27 @@ const chatbotBody = document.getElementById('chatbot-body');
 const chatbotFooter = document.getElementById('chatbot-footer');
 const chatbotZoomIcon = document.getElementById('chatbot-zoom-icon');
 
+var mimeType;
+if(MediaRecorder.isTypeSupported("audio/webm")){
+  mimeType = "audio/webm"
+}
+else if(MediaRecorder.isTypeSupported("video/mp4")){
+  mimeType = "video/mp4"
+}
+else if(MediaRecorder.isTypeSupported("video/webm")){
+  mimeType = "video/webm"
+}
+else{
+  console.error("no suitable mimetype found for this device.");
+}
+
 // マイクアクセス要求
 navigator.mediaDevices.getUserMedia({
   audio: true
 }).then(function (stream) {
   // MediaRecorderオブジェクトで音声データを録音する
   var recorder = new MediaRecorder(stream, {
-    mimeType: 'audio/webm'  });
+    mimeType: mimeType  });
 
   // 音を拾い続けるためのチャンク
   var chunks = [];
@@ -43,7 +57,7 @@ navigator.mediaDevices.getUserMedia({
   // recorder.stopが実行された時のイベント
   recorder.addEventListener('stop', function (event) {
     //集音したものから音声データを作成する
-    var blob = new Blob(chunks, { 'type': 'audio/webm' });
+    var blob = new Blob(chunks, { 'type': mimeType });
 
     // トグルの結果(true/false)をテキストファイルに入れておく
     var toggle = document.getElementById("lang-toggle");
