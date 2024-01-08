@@ -63,7 +63,7 @@ def remove_old_files(folder_path):
 @app.route('/save_audio', methods=['POST'])
 def save_audio():
     # 録音した音声を一時的に保存するファイル名
-    WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.webm'
+    WEBM_FILE = './audio/recording_' + str(uuid.uuid4()) + '.wav'
     # オーディオデータの入ったファイルのパスのみ
     AUDIO_PATH = './audio/'
     # javascriptからファイルを受け取る

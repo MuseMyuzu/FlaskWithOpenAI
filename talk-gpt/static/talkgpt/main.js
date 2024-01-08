@@ -26,6 +26,7 @@ var robotLoadingDiv;
 var bot_li;
 
 var mimeType;
+/*
 if(MediaRecorder.isTypeSupported("audio/webm")){
   mimeType = "audio/webm"
 }
@@ -38,6 +39,12 @@ else if(MediaRecorder.isTypeSupported("video/webm")){
 else{
   console.error("no suitable mimetype found for this device.");
 }
+const codecs = ["audio/webm", "audio/mp3", "audio/aac", "audio/wav", "audio/ogg", "video/webm", "video/mp4"]
+codecs.forEach(element => {
+  console.log(element + ": " + MediaRecorder.isTypeSupported(element))
+});
+mimeType="audio/ogg"
+*/
 
 // マイクアクセス要求
 navigator.mediaDevices.getUserMedia({
@@ -45,8 +52,10 @@ navigator.mediaDevices.getUserMedia({
 }).then(function (stream) {
   // MediaRecorderオブジェクトで音声データを録音する
   var recorder = new MediaRecorder(stream, {
-    mimeType: mimeType
+    // mimeType: mimeType
   });
+  mimeType = recorder.mimeType;
+  console.log("mimeType = " + mimeType);
 
   // 音を拾い続けるためのチャンク
   var chunks = [];
@@ -62,6 +71,7 @@ navigator.mediaDevices.getUserMedia({
   recorder.addEventListener('stop', function (event) {
     //集音したものから音声データを作成する
     var blob = new Blob(chunks, { 'type': mimeType });
+    console.log("blob mimetype = " + mimeType);
 
     // ボタンを無効化
     chatSubmitBtn.disabled = true;
