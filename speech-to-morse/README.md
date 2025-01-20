@@ -1,11 +1,13 @@
 # モールス変換機 SpeechToMorse
  音声をモールス信号に変換します
  
- ▽ デモサイト  
- https://musemyuzu.com/flask/speech-to-morse
+ ~~▽ デモサイト~~  
+ ~~https://musemyuzu.com/flask/speech-to-morse~~
  
 ## 紹介動画
- https://youtu.be/xATNUI4lW0c
+https://github.com/user-attachments/assets/33ac613e-67d8-4be4-a03a-fa142f2ae199
+
+
  
 # ローカルでの実行
  Git clone または、右上の「Code」から「Download ZIP」でファイルをダウンロード・解凍します。  
